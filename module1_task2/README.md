@@ -9,7 +9,7 @@
 * These comments should be written on the same line as the targets 
 * Each comment should start with two characters #
 
-## Usage Simple Shell ⚙️
+## Lifecycle ⚙️
 
 * build: Generate the website
 * clean: Cleanup the content of the directory dist/
