@@ -1,7 +1,7 @@
 #publish hugo
 
 build: ## This command build the site.
-	$(Publish)
+	@hugo
 
 clean: ## This command line delete the specified file.
 	rm -rf dist/*
