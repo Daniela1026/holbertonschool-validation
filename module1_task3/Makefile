@@ -1,10 +1,10 @@
 #publish hugo
 
 build: ## This command build the site.
-	@hugo
+	hugo -s . -d dist/
 
 clean: ## This command line delete the specified file.
-	rm -rf dist
+	rm -rf dist/
 
 post: ## This command line create a new post, the sed comment modified the file's content.
 	hugo new posts/$(POST_NAME).md
