@@ -1,44 +1,35 @@
----
 name: module3_task2
+
 on:
   push:
-    branches: [main, master]
+
   schedule:
     - cron: "0 0 * * *"
 
 jobs:
-  module3_task0:
+  package:
     runs-on: ubuntu-18.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Hugo
-        run: |
-          cd module3_task2/
-          sudo ./setup.sh
-      - name: lint
-        run: |
-          cd module3_task2/
-          make lint
+      - name: cloning
+        uses: actions/checkout@v2
+
+      - name: set_up
+        run: cd module3_task2 && sudo ./setup.sh
+
       - name: build
-        run: |
-          cd module3_task2/
-          make build
-      - name: post
-        run: |
-          cd module3_task2/
-          make POST_TITLE="Test Title" POST_NAME="Test-name" post
-      - name: Integration tests
-        run: |
-          cd module3_task2/
-          make integration-tests
-          make validate
-          make unit-tests
-          make package
-          make clean
-      - name: archive build
-        if: ${{ success()}}
-        uses: actions/upload-artifact@v3
-        with:
-          name: upload-package
-          path: module3_task2/awesome-website.zip
+        run: cd module3_task2 && make build
+
+      - name: run unit-tests
+        run: cd module3_task2 && make unit-tests
+
+      - name: run integration-tests
+        run: cd module3_task2 && make integration-tests
+
+      - name: run validate
+        run: cd module3_task2 && make validate
+
+      - name: lint
+        run: cd module3_task2 && npm install -g markdownlint-cli && make lint
+
+      - name: package
+        run: cd module3_task2 && make package
