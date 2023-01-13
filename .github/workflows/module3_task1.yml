@@ -1,20 +1,31 @@
 name: module3_task1
-
 on:
   push:
-
+    branches:
+      - main
   schedule:
     - cron: "0 0 * * *"
 
 jobs:
-  build:
+  module3_task0:
     runs-on: ubuntu-18.04
     steps:
-      - name: cloning
-        uses: actions/checkout@v2
-
-      - name: set_up
-        run: cd module3_task1 && sudo ./setup.sh
-
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install tools
+        run: |
+          cd module3_task1
+          chmod u+x setup.sh
+          sudo ./setup.sh
       - name: build
-        run: cd module3_task1 && make build
+        run: |
+          cd module3_task1/
+          make build
+      - name: post
+        run: |
+          cd module3_task1/
+          make POST_TITLE="Test" POST_NAME="name" post
+      - name: clean
+        run: |
+          cd module3_task1/
+          make clean
