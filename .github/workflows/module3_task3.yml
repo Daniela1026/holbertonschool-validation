@@ -1,48 +1,47 @@
----
 name: module3_task3
+
 on:
-  schedule:
-    - cron: "* * * * *"
   push:
-    branches:
-      - 'main'
-      - 'master'
+    branches: [main]
     tags:
-      - 'v*.*.*'
+      - '1.0.0'
+
+  schedule:
+    - cron: "0 0 * * *"
+
 jobs:
-  build:
+  tag:
     runs-on: ubuntu-18.04
     steps:
-      - name: Clone the repository
-        uses: actions/checkout@v3
+      - name: cloning
+        uses: actions/checkout@v2
 
-      - name: Check setup file
-        run: make lint -C module3_task3/
+      - name: set_up
+        run: cd module3_task3 && sudo ./setup.sh
 
-      - name: Install tools
-        run: |
-          cd module3_task3
-          sudo ./setup.sh
-      - name: Build
-        run: make build -C module3_task3/
+      - name: build
+        run: cd module3_task3 && make build
 
-      - name: Validate
-        run: make validate -C module3_task3/
+      - name: run unit-tests
+        run: cd module3_task3 && make unit-tests
 
-      - name: Unit testing
-        run: make unit-tests -C module3_task3/
+      - name: run integration-tests
+        run: cd module3_task3 && make integration-tests
 
-      - name: Integration testing
-        run: make integration-tests -C module3_task3/
+      - name: run validate
+        run: cd module3_task3 && make validate
 
-      - name: Package
-        run: make package -C module3_task3/
+      - name: lint
+        run: cd module3_task3 && npm install -g markdownlint-cli && make lint
 
-      - name: Release
+      - name: package
+        run: cd module3_task3 && make package
+
+      - name: 1.0.0
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/1.0.0')
         with:
           files: |
-            module3_task3/DEPLOY.md
             module3_task3/awesome-website.zip
-...
+            module3_task3/DEPLOY.md
+          body_path: module3_task3/DEPLOY.md
