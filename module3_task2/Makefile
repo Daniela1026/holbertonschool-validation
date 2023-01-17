@@ -1,14 +1,29 @@
-#publish hugo
+help: ## Show help command
+	@sed -ne '/@sed/!s/## //p' Makefile
 
-build: ## This command build the site.
+build:  ## Create Website
 	@hugo
 
-clean: ## This command line delete the specified file.
-	rm -rf dist/*
+clean:  ## Delete content of dist folder
+	@rm -rf dist/*
 
-post: ## This command line create a new post, the sed comment modified the file's content.
-	hugo new posts/$(POST_NAME).md
-	sed -i 's/title: .*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
+post:  ## Create a post
+	@hugo new ./content/posts/$(POST_NAME).md
+	@sed -i '/title:*/c\title: "$(POST_TITLE)"' ./content/posts/$(POST_NAME).md
 
-help:  ## Show this help usage
-	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+package: ## zip website
+	@hugo
+	@zip awesome-website.zip ./dist
+
+lint: ## lint with markdown
+	@markdownlint README.md
+	@markdownlint DEPLOY.md
+
+unit-tests: ## test file
+
+
+integration-tests: ## integrate file
+
+
+validate: ## valide file
+
