@@ -2,68 +2,47 @@
 name: module3_task3
 on:
   schedule:
-    # workflow triggered each day
-    - cron: '30 5 * * *'
+    - cron: "* * * * *"
   push:
-    # trigger each push event
     branches:
-      - main
-
+      - 'main'
+      - 'master'
+    tags:
+      - 'v*.*.*'
 jobs:
-  module3_task3:
+  build:
     runs-on: ubuntu-18.04
     steps:
-      - name: checkout the repository
+      - name: Clone the repository
         uses: actions/checkout@v3
-      # Run the setup.sh to install missing tools
-      - name: Setup environment
+
+      - name: Check setup file
+        run: make lint -C module3_task3/
+
+      - name: Install tools
         run: |
-          cd module3_task3/
+          cd module3_task3
           sudo ./setup.sh
-      # To use the makefile
       - name: Build
-        run: |
-          cd module3_task3
-          make build
-      - name: Create post
-        env:
-          POST_NAME: my-post
-          POST_TITLE: My Post
-        run: |
-          cd module3_task3
-          make post
-      - name: markdownlint
-        run: |
-          cd module3_task3
-          make lint
-      - name: clean up the dist
-        run: |
-          cd module3_task3
-          make clean
-      - name: unit-tests
-        run: |
-          cd module3_task3
-          make unit-tests
-      - name: integration-tests
-        run: |
-          cd module3_task3
-          make integration-tests
-          make package
-      - name: validate
-        run: |
-          cd module3_task3
-          make validate
-      - name: archive build
-        if: ${{ success()}}
-        uses: actions/upload-artifact@v3
-        with:
-          name: upload-pakage
-          path: module3_task3/awesome-website.zip
+        run: make build -C module3_task3/
+
+      - name: Validate
+        run: make validate -C module3_task3/
+
+      - name: Unit testing
+        run: make unit-tests -C module3_task3/
+
+      - name: Integration testing
+        run: make integration-tests -C module3_task3/
+
+      - name: Package
+        run: make package -C module3_task3/
+
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          tag_name:
-            1.0.0
           files: |
-            /module3_task3/DEPLOY.md
-            /module3_task3/awesome-website.zip
+            module3_task3/DEPLOY.md
+            module3_task3/awesome-website.zip
+...
