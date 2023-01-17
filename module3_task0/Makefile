@@ -1,14 +1,12 @@
-#publish hugo
+build:	## Generate the website from the markdown and configuration files in the directory dist/
+	hugo -s . -d dist/
 
-build: ## This command build the site.
-	@hugo
-
-clean: ## This command line delete the specified file.
-	rm -rf dist/*
-
-post: ## This command line create a new post, the sed comment modified the file's content.
+post:	## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
 	hugo new posts/$(POST_NAME).md
-	sed -i 's/title: .*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
+	sed -i 's/title: .*/title:"$(POST_TITLE)"/' content/posts/$(POST_NAME).md 
 
-help:  ## Show this help usage
+clean:	## Cleanup the content of the directory dist/
+	rm -rf dist/
+
+help: Makefile ## Show this help usage
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
