@@ -1,57 +1,71 @@
+---
 name: module3_task4
 on:
+  schedule:
+    # workflow triggered each day
+    - cron: '30 5 * * *'
   push:
+    # trigger each push event
     branches:
       - main
-    tags:
-      - "1.0.1"
-  schedule:
-    - cron: '0 0 * * *'
   pull_request:
-    types: [opened, reopened, synchronize]
-
-permissions: read-all
+    types: [opened, reopened]
 
 jobs:
-  tags:
-    name: jobs
+  module3_task4:
     runs-on: ubuntu-18.04
-
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: sudo module3_task4/setup.sh
-      - name: install markdown
-        run: npm install -g markdownlint-cli
-
-      - run: cd module3_task4 && make help
-      - run: cd module3_task4 && make build
-      - run: cd module3_task4 && make clean
-      - run: cd module3_task4 && make build
-      - run: cd module3_task4 && make post POST_NAME="name" POST_TITLE="title"
-      - run: cd module3_task4 && make lint
-      - run: cd module3_task4 && make package
-      - run: cd module3_task4 && make unit-tests
-      - run: cd module3_task4 && make integration-tests
-      - run: cd module3_task4 && make validate
-      - name: Checkout
+      - name: checkout the repository
         uses: actions/checkout@v3
+      # Run the setup.sh to install missing tools
+      - name: Setup environment
+        run: |
+          cd module3_task4/
+          sudo ./setup.sh
+      # To use the makefile
+      - name: Build
+        run: |
+          cd module3_task4
+          make build
+      - name: Create post
+        env:
+          POST_NAME: my-post
+          POST_TITLE: My Post
+        run: |
+          cd module3_task4
+          make post
+      - name: markdownlint
+        run: |
+          cd module3_task4
+          make lint
+      - name: clean up the dist
+        run: |
+          cd module3_task4
+          make clean
+      - name: unit-tests
+        run: |
+          cd module3_task4
+          make unit-tests
+      - name: integration-tests
+        run: |
+          cd module3_task4
+          make integration-tests
+          make package
+      - name: validate
+        run: |
+          cd module3_task4
+          make validate
+      - name: archive build
+        if: ${{ success()}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload-pakage
+          path: module3_task4/awesome-website.zip
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/1.0.1')
         with:
+          tag_name:
+            1.0.1
           files: |
-            awesome-website.zip
-            DEPLOY.md
-          body: |
-            ## What is in the archive and how to unarchive it?
-            ## What are the commands to start and stop the application?
-            ## How to customize where the application logs are written?
-            ## How to “quickly” verify that the application is running?
-            ## Create a release with the archive triggered by a tag
-      - run: gh release create v1.0.1 --title "v1.0.1" \
-          --notes DEPLOY.md 2>/dev/null || echo "OK"
-      - name: Release Drafter
-        uses: release-drafter/release-drafter@v5.21.1 
+            /module3_task4/DEPLOY.md
+            /module3_task4/awesome-website.zip
