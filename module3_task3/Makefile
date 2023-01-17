@@ -1,27 +1,26 @@
-build:	 ## este comando construye el sitio web publicando los archivos en el directorio dict/.
+build: ## Generate the website from the markdown and configuration files in the directory dist/.
 	hugo
 
-clean:	## borra el contenido del directorio dict/.
-	rm -rf dist/*
+clean: ## Cleanup the content of the directory dist/
+	rm -r dist/*
 
-post:	## Crea un nuevo posts.
-	rm -rf content/post/$(POST_NAME).md
+post: ## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME.
 	hugo new posts/$(POST_NAME).md
-	sed -i 's/title:.*/title: $(POST_TITLE)/' content/posts/$(POST_NAME).md
-	sed -i 's/draft:.*/draft: false/' content/posts/$(POST_NAME).md
+	sed -i 's/title: .*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
 
-package: ## Generat the ZIP archive
-	hugo
-	zip -r awesome-website.zip dist/
+help: ## prints out the list of targets and their usage.
+	cat Makefile | grep "##" | tr -d '##'
 
-lint: ## Updated to lint the files README.md and DEPLOY.md
+lint: ## lint the files README.md and DEPLOY.md with markdownlint command line
+	yamllint "$(SHELLCHECK)" setup.sh >/dev/null 2>&1 || echo "Lint Failed"
 	markdownlint README.md DEPLOY.md
 
-unit-tests: ## Test
+package: ## produces a file awesome-website.zip, containing the binary awesome-api and the directory dist/ directory
+	make build
+	zip awesome-website.zip dist/
 
-integration-tests: ## Test
+unit-tests: ## ERROR: No mention of target unit-tests found in ./README.md
 
-validate: ## Test
+integration-tests: ## ERROR: No comment found for target integration-tests in ./Makefile
 
-help:	## Muestra la ayuda.
-	@egrep -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?# "}; {printf "\033[36m%-0s:\033[0m %s\n",$$1, $$2}'
+validate: ## ERROR: No comment found for target validate in ./Makefile

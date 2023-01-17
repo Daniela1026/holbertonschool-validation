@@ -1,51 +1,69 @@
 ---
 name: module3_task3
 on:
-  push:
-    branches: [main, master]
   schedule:
-    - cron: "0 0 * * *"
+    # workflow triggered each day
+    - cron: '30 5 * * *'
+  push:
+    # trigger each push event
+    branches:
+      - main
 
 jobs:
-  module3_task0:
+  module3_task3:
     runs-on: ubuntu-18.04
     steps:
-      - name: Checkout
+      - name: checkout the repository
         uses: actions/checkout@v3
-      - name: Setup Hugo
+      # Run the setup.sh to install missing tools
+      - name: Setup environment
         run: |
           cd module3_task3/
           sudo ./setup.sh
-      - name: lint
+      # To use the makefile
+      - name: Build
         run: |
-          cd module3_task3/
-          make lint
-      - name: build
-        run: |
-          cd module3_task3/
+          cd module3_task3
           make build
-      - name: post
+      - name: Create post
+        env:
+          POST_NAME: my-post
+          POST_TITLE: My Post
         run: |
-          cd module3_task3/
-          make POST_TITLE="Test Title" POST_NAME="Test-name" post
-      - name: Integration tests
+          cd module3_task3
+          make post
+      - name: markdownlint
         run: |
-          cd module3_task3/
-          make integration-tests
-          make validate
-          make unit-tests
-          make package
+          cd module3_task3
+          make lint
+      - name: clean up the dist
+        run: |
+          cd module3_task3
           make clean
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: 1.0.0
-          files: |
-            module3_task3/awesome-website.zip
-            module3_task3/DEPLOY.md
+      - name: unit-tests
+        run: |
+          cd module3_task3
+          make unit-tests
+      - name: integration-tests
+        run: |
+          cd module3_task3
+          make integration-tests
+          make package
+      - name: validate
+        run: |
+          cd module3_task3
+          make validate
       - name: archive build
         if: ${{ success()}}
         uses: actions/upload-artifact@v3
         with:
-          name: upload-package
+          name: upload-pakage
           path: module3_task3/awesome-website.zip
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name:
+            1.0.0
+          files: |
+            /module3_task3/DEPLOY.md
+            /module3_task3/awesome-website.zip
