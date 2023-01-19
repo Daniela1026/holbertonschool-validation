@@ -1,60 +1,49 @@
+---
 name: module3_task4
 on:
+  schedule:
+    - cron: "* * * * *"
   push:
     branches:
-      - main
+      - 'main'
+      - 'master'
     tags:
-      - "1.0.1"
-  schedule:
-    - cron: '0 0 * * *'
+      - 'v*.*.*'
   pull_request:
-    types: [opened, reopened, synchronize]
-
-permissions: read-all
-
 jobs:
-  builds:
-    name: jobs
+  build:
     runs-on: ubuntu-18.04
-
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: |
-          cd module3_task4/
-          sudo ./setup.sh
-      - name: install markdown
-        run: npm install -g markdownlint-cli
-
-      - run: cd module3_task4 && make help
-      - run: cd module3_task4 && make build
-      - run: cd module3_task4 && make clean
-      - run: cd module3_task4 && make build
-      - run: cd module3_task4 && make post POST_NAME="name" POST_TITLE="title"
-      - run: cd module3_task4 && make lint
-      - run: cd module3_task4 && make package
-      - run: cd module3_task4 && make unit-tests
-      - run: cd module3_task4 && make integration-tests
-      - run: cd module3_task4 && make validate
-      - name: Checkout
+      - name: Clone the repository
         uses: actions/checkout@v3
+
+      - name: Check setup file
+        run: make lint -C module3_task4/
+
+      - name: Install tools
+        run: |
+          cd module3_task4
+          sudo ./setup.sh
+      - name: Build
+        run: make build -C module3_task4/
+
+      - name: Validate
+        run: make validate -C module3_task4/
+
+      - name: Unit testing
+        run: make unit-tests -C module3_task4/
+
+      - name: Integration testing
+        run: make integration-tests -C module3_task4/
+
+      - name: Package
+        run: make package -C module3_task4/
+
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/1.0.0')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            awesome-website.zip
-            DEPLOY.md
-          body: |
-            ## What is in the archive and how to unarchive it?
-            ## What are the commands to start and stop the application?
-            ## How to customize where the application logs are written?
-            ## How to “quickly” verify that the application is running?
-            ## Create a release with the archive triggered by a tag
-      - run: gh release create v1.0.0 --title "v1.0.0" \
-          --notes DEPLOY.md 2>/dev/null || echo "OK"
-      - name: Release Drafter
-        uses: release-drafter/release-drafter@v5.21.1
-
+            module3_task4/DEPLOY.md
+            module3_task4/awesome-website.zip
+...
