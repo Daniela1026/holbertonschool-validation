@@ -8,7 +8,7 @@ on:
       - 'main'
       - 'master'
     tags:
-      - 'v*.*.*'
+      - '1.0.1'
   pull_request:
 jobs:
   build:
