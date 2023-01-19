@@ -1,63 +1,55 @@
----
 name: module3_task4
 on:
   push:
-    branch:
-      - 'main'
-    tags:
-      - '1.*.*'
+    branches:
+      - main
+      - master
+  # https://www.freeformatter.com/cron-expression-generator-quartz.html
   schedule:
-    - cron: '9 9 * * *'
+    - cron: "0 0 * * *"
+  # https://frontside.com/blog/2020-05-26-github-actions-pull_request/
   pull_request:
-    types:
-      - opened
-
+    types: [opened, reopened, edited, ready_for_review]
 jobs:
-  make-help:
+  module3_task0:
     runs-on: ubuntu-18.04
     steps:
-
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
-
-      - name: node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - name: setup
+      - name: Setup Hugo
         run: |
-          cd module3_task4
-          ./setup.sh
-      - name: make build
+          cd module3_task4/
+          sudo ./setup.sh
+      - name: lint
         run: |
-          cd module3_task4
-          make build
-      - name: make lint
-        run: |
-          cd module3_task4
+          cd module3_task4/
           make lint
-      - name: unit-tests
+      - name: build
         run: |
-          cd module3_task4
-          make unit-tests
-      - name: integration-tests
+          cd module3_task4/
+          make build
+      - name: post
         run: |
-          cd module3_task4
+          cd module3_task4/
+          make POST_TITLE="Test Title" POST_NAME="Test-name" post
+      - name: Integration tests
+        run: |
+          cd module3_task4/
           make integration-tests
-      - name: validate
-        run: |
-          cd module3_task4
           make validate
-      - name: make package
-        run: |
-          cd module3_task4
+          make unit-tests
           make package
-      - name: release
+          echo ${{github.ref}}
+      - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
-          body_path: module3_task4/DEPLOY.txt
+          tag_name: 1.0.1
           files: |
             module3_task4/awesome-website.zip
             module3_task4/DEPLOY.md
+      - name: archive build
+        if: ${{ success()}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload-package
+          path: module3_task4/awesome-website.zip
