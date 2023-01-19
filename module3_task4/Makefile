@@ -1,26 +1,30 @@
-build: ## Generate the website from the markdown and configuration files in the directory dist/.
-	hugo
+.PHONY: ## build clean post
 
-clean: ## Cleanup the content of the directory dist/
+build: ## Build the website
+	hugo -d dist/
+
+clean: ## Clean the build directory
 	rm -r dist/*
 
-post: ## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME.
+post: ## Create a new blog post
 	hugo new posts/$(POST_NAME).md
-	sed -i 's/title: .*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
+## Update the title of the new post
+	sed -i "s/title: .*/title: $(POST_TITLE)/" ./content/posts/$(POST_NAME).md
 
-help: ## prints out the list of targets and their usage.
-	cat Makefile | grep "##" | tr -d '##'
+help: ## Show commands usage information
+	@echo "Available targets:"
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//' | awk '{ printf "  %-20s %s\n", $$1, $$2 }'
 
-lint: ## lint the files README.md and DEPLOY.md with markdownlint command line
-	yamllint "$(SHELLCHECK)" setup.sh >/dev/null 2>&1 || echo "Lint Failed"
-	markdownlint README.md DEPLOY.md
+package: ## Zip website
+	@hugo
+	@zip awesome-website.zip ./dist
 
-package: ## produces a file awesome-website.zip, containing the binary awesome-api and the directory dist/ directory
-	make build
-	zip awesome-website.zip dist/
+lint: ## Lint with markdown
+	@markdownlint README.md
+	@markdownlint DEPLOY.md
 
-unit-tests: ## ERROR: No mention of target unit-tests found in ./README.md
+unit-tests: ## Test file
 
-integration-tests: ## ERROR: No comment found for target integration-tests in ./Makefile
+integration-tests: ## Integration file
 
-validate: ## ERROR: No comment found for target validate in ./Makefile
+validate: ## validate
