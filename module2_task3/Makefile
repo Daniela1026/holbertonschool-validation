@@ -10,11 +10,11 @@ stop: ## Stop the application
 
 clean: ## Delete awesome-api
 		-make stop
-		-rm ./awesome-api awesome.log
+		-rm ./awesome-api awesome.log coverage*
 
 test: ## Test the application
-		curl http://localhost:9999
-		curl http://localhost:9999/health
+		make unit-tests
+		make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
 	golangci-lint run
