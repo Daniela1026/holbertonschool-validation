@@ -1,53 +1,50 @@
-# Prerequisites
+# Welcome to Awesome Inc
 
-* Shell terminal basics
+## Prerequisites
 
-* Git with the command line
-* Make/Makefile usage
-* A HTML5-compliant web browser
-* A free account on GitHub, referenced as `<GitHub Handle>`
-* A shell terminal with `bash` `zsh` or `ksh`, including the standard Unix
-toolset (`ls`, `cd`, etc.) with:
-  * GNU Make in version 3.81+
-  * Git (command line) in version 2+
-  * `Go Hugo` v0.80+
-* The student needs to be able to spawn up a clean Ubuntu 18.04 system.
-Therefore Docker is recommended with NO prior knowledge.
-* A text editor or IDE (Integrated Development Editor) of your convenience
-(Visual Code, Notepad++, Vim, Emacs, IntelliJ, etc.)
+- **Same requirements as the previous task:**
+
+  - A Valid Go-Hugo website is provided
+  - There are no Git Submodules
+  - The theme  `ananke`  is installed
+  - No directory  `dist/`  committed
+  - Makefile present
+- **Add comments in the  `Makefile`  to describe what each target is expected
+to do.**
+
+  - These comments should be written on the same line as the targets
+  - Each comment should start with two characters  `#`
 
 ## Lifecycle
 
-* `build` : Generate the website from the markdown and configuration files in
+- **post** : Generate the website from the markdown and configuration files in
 the directory `dist/`.
-* `clean` : Cleanup the content of the directory `dist/`
-* `post` : Create a new blog post whose filename and title come from the
+- **build** : Cleanup the content of the directory `dist/`
+- **clean** : Create a new blog post whose filename and title come from the
 environment variables `POST_TITLE` and `POST_NAME`.
-* `help` : prints out the list of targets and their usage.
-* `lint` : Print the yaml file
-* `package` : Produces a file awesome-website.zip, containing the binary
-awesome-api and the directory dist/ directory
-* `unit-tests`: Documentation must be up to date according to the new make
-targets (Makefile and README.md)
-* `integration-tests`: ## ERROR: No comment found for target integration-tests
-in `./Makefile`
-* `validate`: ## ERROR: No comment found for target validate in `./Makefile`
+- **package** : Create a file named awesome-website.zip
+- **lint** : Updated to lint the files README.md and DEPLOY.md with markdownlint
+- **unit-tests** : Create Uni-test
+- **integration-tests** : Integration-tests (No found)
+- **validate** : Validate (No found)
+- **help** : Prints out the list of targets and their usage.
 
 ## Workflow
 
-This project needs the following tools / services:
-
-* The command lines
-  * yq
-  * shellcheck
+- The original workflow file <...>/.github/workflows/module3_task0.yml must be:
+  - Present with a valid YAML syntax
+  - It must be a valid GitHub action workflow with 1 job and 2 steps
+  - It must be have 2 triggers
 
 ## Build Workflow
 
-Regarding the tooling, you have to:
-
-* Ensure that the workflow is executed into an Ubuntu 18.04 execution
-environment
-* Ensure that all the required tools are installed prior to any make target,
-by executing the script setup.sh
-  * The script should be modified to only install missing tools
-  * (no make target are expected)
+- Workflows Steps
+  - Uses Checkout
+  - Run bash script
+  - Run make build
+  - Run make target package
+  - Run make target lint
+  - Run unit-Test
+  - Run validate
+  - Uses production artifacts
+  - Uses Release task 3

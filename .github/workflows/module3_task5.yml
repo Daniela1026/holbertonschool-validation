@@ -1,71 +1,74 @@
----
-name: module3_task4
-on:
-  schedule:
-    # workflow triggered each day
-    - cron: '30 5 * * *'
+name: module3_task5
+
+on: 
   push:
-    # trigger each push event
-    branches:
-      - main
+    branches: [master]
+    tags:
+      - "*.*.*"
   pull_request:
-    types: [opened, reopened]
+    branches: [master]
+    types: [opened, reopened, synchronize]
+  schedule:
+    # is a special character in YAML so you have to quote this string
+    - cron: '30 00 * * *' 
 
 jobs:
-  module3_task4:
+  build:
+
     runs-on: ubuntu-18.04
+
     steps:
-      - name: checkout the repository
+      - name: "Checkout"
         uses: actions/checkout@v3
-      # Run the setup.sh to install missing tools
-      - name: Setup environment
+
+      - name: "Run bash script"
         run: |
-          cd module3_task4/
-          sudo ./setup.sh
-      # To use the makefile
-      - name: Build
+          cd module3_task5 && ./setup.sh
+
+      - name: "Run make build"
         run: |
-          cd module3_task4
-          make build
-      - name: Create post
-        env:
-          POST_NAME: my-post
-          POST_TITLE: My Post
+          cd module3_task5 && make build
+      - name: "Run make target package"
         run: |
-          cd module3_task4
-          make post
-      - name: markdownlint
+          cd module3_task5 && make package
+      - name: "Run make target lint"
         run: |
-          cd module3_task4
-          make lint
-      - name: clean up the dist
+          cd module3_task5 && make lint
+      - name: "Uni-Test"
         run: |
-          cd module3_task4
-          make clean
-      - name: unit-tests
+          cd module3_task5 && make unit-tests
+      - name: "Integration-tests"
         run: |
-          cd module3_task4
-          make unit-tests
-      - name: integration-tests
+          cd module3_task5 && make integration-tests
+      - name: "validate"
         run: |
-          cd module3_task4
-          make integration-tests
-          make package
-      - name: validate
-        run: |
-          cd module3_task4
-          make validate
-      - name: archive build
-        if: ${{ success()}}
+          cd module3_task5 && make validate
+      - name: "Archive production artifacts"
         uses: actions/upload-artifact@v3
         with:
-          name: upload-pakage
-          path: module3_task4/awesome-website.zip
-      - name: Release
+          name: file named awesome-website
+          path: |
+            module3_task5/awesome-website.zip
+      - name: "Release task 5"
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          tag_name:
-            1.0.1
+          # body_path: module3_task5/DEPLOY.md
           files: |
-            /module3_task4/DEPLOY.md
-            /module3_task4/awesome-website.zip
+            module3_task5/DEPLOY.md
+            module3_task4/awesome-website.zip
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: 'module3_task5/dist'
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "🚀 Deployed on"
+          publish-message: "🎉 Published on"
+          enable-pull-request-comment: true
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
