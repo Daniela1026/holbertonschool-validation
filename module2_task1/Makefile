@@ -6,13 +6,11 @@ run: ## background by executing
 		./awesome-api >./awesome.log 2>&1 &
 
 stop: ## Stop the application
-		kill $(shell pgrep awesome-api) 2>&1 &
+		kill $(shell pgrep awesome-api)
 
 clean: ## Delete awesome-api
-		-rm -r awesome.log
-		-rm -r awesome-api
-		-rm go.mod
-		-rm go.sum
+		-make stop
+		-rm ./awesome-api awesome.log
 
 test: ## Test the application
 		curl http://localhost:9999
