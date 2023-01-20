@@ -43,7 +43,7 @@ func Test_server(t *testing.T) {
 			body:         "Hello there!",
 		},
 		{
-			name:         "With an emply name parameter",
+			name:         "With two name parameters",
 			URI:          "/hello?name=Daniela&name=Dani",
 			responseCode: 200,
 			body:         "Hello Dani!",
