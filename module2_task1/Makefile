@@ -9,8 +9,8 @@ stop: ## Stop the application
 		kill $(shell pgrep awesome-api)
 
 clean: ## Delete awesome-api
-		-make stop
-		-rm ./awesome-api awesome.log
+		make stop
+		rm ./awesome-api awesome.log
 
 test: ## Test the application
 		curl http://localhost:9999
