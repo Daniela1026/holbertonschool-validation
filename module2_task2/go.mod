@@ -1,5 +1,5 @@
-module github.com/apinedas/awesome-api
+module github.com/ManuRodriguezC/awesome-api
 
-go 1.19
+go 1.13
 
-require github.com/gorilla/mux v1.8.0 // indirect
+require github.com/gorilla/mux v1.8.0

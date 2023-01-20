@@ -1,26 +1,29 @@
-build: ## Compile the source code
+build: ## Compile the source code of the application
 		make lint
+		go mod init github.com/ManuRodriguezC/awesome-api
 		go build
 
-run: ## background by executing
+run: ## un the application in background by executing
 		./awesome-api >./awesome.log 2>&1 &
 
 stop: ## Stop the application
-		kill $(shell pgrep awesome-api)
+		kill $(shell pgrep awesome-api) 2>&1 &
 
-clean: ## Delete awesome-api
-		-make stop
-		-rm ./awesome-api awesome.log
+clean: ## Delete the binaty awesome-api
+		-rm -r awesome.log 2>&1 &
+		-rm -r awesome-api 2>&1 &
+		-rm go.mod 2>&1 &
+		-rm go.sum 2>&1 &
 
 test: ## Test the application
 		curl http://localhost:9999
 		curl http://localhost:9999/health
 
-lint:	## Lints all the go files using golangci-lint
-	golangci-lint run
+lint: ## Implemented and should fail when the linter catches and error
+		golangci-lint run
 
-unit-tests:	## Runs implemented unit test using go test
-	go test -v -short -coverprofile=coverage-units.out
+unit-tests: ## Test using in go tests
+		go test -v -short -coverprofile=coverage-units.out
 
 help: ## Print the differents commands
-		@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+		cat Makefile | grep '##' | tr -d '##' | head -n -1
