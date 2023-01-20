@@ -12,7 +12,7 @@ clean: ## Delete awesome-api
 		-make stop
 		-rm ./awesome-api awesome.log coverage*
 
-test: ## Test the application
+test: ## Test API
 		make unit-tests
 		make integration-tests
 
