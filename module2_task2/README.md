@@ -13,6 +13,7 @@
 * clean: Delte the files
 * test: You want to test it to ensure that it behaves as expected. With the application started, you may want to use the command line curl
 * help: Print all target make
+* unit-tests: Runs all unit-tests
 
 # Leraning Objectives
 

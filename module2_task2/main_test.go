@@ -38,9 +38,9 @@ func Test_HelloHandler(t *testing.T) {
 		},
 		{
 			name:         "With an emply name parameter",
-			queryString:  "name=Esteban&name=Manu",
+			queryString:  "name=Daniela&name=Dani",
 			responseCode: 200,
-			body:         "Hello Manu",
+			body:         "Hello Dani",
 		},
 		// INSERT MORE TESTS HERE
 	}
