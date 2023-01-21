@@ -13,8 +13,7 @@ clean: ## Delete awesome-api
 		-rm ./awesome-api awesome.log coverage*
 
 test: ## Test API
-		make unit-tests
-		make integration-tests
+		make unit-tests && make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
 	golangci-lint run
