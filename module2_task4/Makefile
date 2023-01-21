@@ -1,5 +1,5 @@
-build: check		## Generate the website from the markdown and configuration files in the directory dist/
-	hugo
+build:  ## Generate the website from the markdown and configuration files in the directory dist/
+	@make check >/dev/null 2>&1 && hugo || exit -1
 
 clean:		## Cleans the dist folder
 	rm -rf dist
