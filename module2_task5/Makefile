@@ -10,10 +10,6 @@ build:  ## Generate the website from the markdown and configuration files in the
 	make go-build
 	make hugo-build
 
-clean:		## Cleans the dist folder
-	-make stop
-	-rm -rf awesome-api awesome.log coverage* go* ./dist
-
 post:		## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
 	hugo new posts/${POST_NAME}.md
 	sed -i "s/title: .*/title: ${POST_TITLE}/" ./content/posts/${POST_NAME}.md
@@ -28,14 +24,17 @@ validate: ## Validates dist/index.html using W3C Hbtn validator
 	-./W3C-Validator/w3c_validator.py ./dist/index.html
 	-rm -rf ./W3C-Validator
 
-help:		## Show help mesages
-	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
-
 run:	## Runs the built binary and send everything to awesome.log
 	./awesome-api >./awesome.log 2>&1 &
 
+
 stop:	## Terminates the execution of awesome-api
 	kill $(shell pgrep awesome-api)
+
+
+clean:		## Cleans the dist folder
+	-make stop
+	-rm -rf awesome-api awesome.log coverage* go* ./dist
 
 test:	## Tests API using go test
 	-make build
@@ -50,3 +49,6 @@ unit-tests:	## Runs implemented unit test using go test
 
 integration-tests:	## Runs integration test using go test
 	go test -v -coverprofile=coverage-integrations.out
+
+help:		## Show help mesages
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
