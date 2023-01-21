@@ -15,8 +15,8 @@ post:		## Create a new blog post whose filename and title come from the environm
 	sed -i "s/title: .*/title: ${POST_TITLE}/" ./content/posts/${POST_NAME}.md
 
 check:  ## Lints and check for dead links on markdowns using markdownlint-cli and markdown-link-check
-	@markdownlint content/posts/*
-	@markdown-link-check content/posts/*
+	markdownlint content/posts/*
+	markdown-link-check content/posts/*
 
 validate: ## Validates dist/index.html using W3C Hbtn validator
 	make build
@@ -27,10 +27,8 @@ validate: ## Validates dist/index.html using W3C Hbtn validator
 run:	## Runs the built binary and send everything to awesome.log
 	./awesome-api >./awesome.log 2>&1 &
 
-
 stop:	## Terminates the execution of awesome-api
 	kill $(shell pgrep awesome-api)
-
 
 clean:		## Cleans the dist folder
 	-make stop
