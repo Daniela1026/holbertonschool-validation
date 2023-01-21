@@ -1,8 +1,18 @@
+go-build:	## Builds the API binary file using go
+	go mod init github.com/Apinedas/awesome-api
+	go get github.com/gorilla/mux
+	go build
+
+hugo-build: check		## Builds a website using gohugo on the dist folder
+	hugo
+	
 build:  ## Generate the website from the markdown and configuration files in the directory dist/
-	@make check >/dev/null 2>&1 && hugo || exit -1
+	make go-build
+	make hugo-build
 
 clean:		## Cleans the dist folder
-	rm -rf dist
+	-make stop
+	-rm -rf awesome-api awesome.log coverage* go* ./dist
 
 post:		## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
 	hugo new posts/${POST_NAME}.md
@@ -20,3 +30,23 @@ validate: ## Validates dist/index.html using W3C Hbtn validator
 
 help:		## Show help mesages
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+
+run:	## Runs the built binary and send everything to awesome.log
+	./awesome-api >./awesome.log 2>&1 &
+
+stop:	## Terminates the execution of awesome-api
+	kill $(shell pgrep awesome-api)
+
+test:	## Tests API using go test
+	-make build
+	make unit-tests
+	make integration-tests
+
+lint:	## Lints all the go files using golangci-lint
+	golangci-lint run
+
+unit-tests:	## Runs implemented unit test using go test
+	go test -v -short -coverprofile=coverage-units.out
+
+integration-tests:	## Runs integration test using go test
+	go test -v -coverprofile=coverage-integrations.out
