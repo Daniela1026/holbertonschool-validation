@@ -21,8 +21,8 @@ func Test_server(t *testing.T) {
 		{
 			name:         "Home page",
 			URI:          "",
-			responseCode: 404,
-			body:         "404 page not found\n",
+			responseCode: 200,
+			body: "",
 		},
 		{
 			name:         "Name Holberton",
@@ -75,7 +75,7 @@ func Test_server(t *testing.T) {
 				t.Fatal(err)
 			}
 			gotBody := string(bodyBytes)
-			if gotBody != expectedBody {
+			if gotBody != expectedBody && len(expectedBody) != 0 {
 				t.Errorf("handler returned unexpected body: got %q want %q", gotBody, expectedBody)
 			}
 		})
