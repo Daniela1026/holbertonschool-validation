@@ -1,5 +1,5 @@
-build: check		## Compile the source code
-	hugo
+build:   ## Compile the source code
+	make check && hugo
 
 clean:		## Delete awesome-api
 	rm -rf dist
@@ -9,8 +9,8 @@ post:		## Create a new blog post whose filename and title come from the environm
 	sed -i "s/title: .*/title: ${POST_TITLE}/" ./content/posts/${POST_NAME}.md
 
 check:  ## Lints and check for dead links on markdowns using markdownlint-cli and markdown-link-check
-	markdownlint ./content/posts/*.md
-	markdown-link-check ./content/posts/*.md
+	markdownlint ./content/posts/*
+	markdown-link-check ./content/posts/*
 
 validate: ## Validates dist/index.html using W3C Hbtn validator
 	make build
