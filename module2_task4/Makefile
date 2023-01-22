@@ -1,7 +1,7 @@
-build:  ## Generate the website from the markdown and configuration files in the directory dist/
-	@make check >/dev/null 2>&1 && hugo || exit -1
+build: check		## Compile the source code
+	hugo
 
-clean:		## Cleans the dist folder
+clean:		## Delete awesome-api
 	rm -rf dist
 
 post:		## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
@@ -9,8 +9,8 @@ post:		## Create a new blog post whose filename and title come from the environm
 	sed -i "s/title: .*/title: ${POST_TITLE}/" ./content/posts/${POST_NAME}.md
 
 check:  ## Lints and check for dead links on markdowns using markdownlint-cli and markdown-link-check
-	@markdownlint content/posts/*
-	@markdown-link-check content/posts/*
+	markdownlint ./content/posts/*.md
+	markdown-link-check ./content/posts/*.md
 
 validate: ## Validates dist/index.html using W3C Hbtn validator
 	make build
@@ -18,5 +18,5 @@ validate: ## Validates dist/index.html using W3C Hbtn validator
 	-./W3C-Validator/w3c_validator.py ./dist/index.html
 	-rm -rf ./W3C-Validator
 
-help:		## Show help mesages
+help:		## Print the differents commands
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
