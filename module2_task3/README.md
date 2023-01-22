@@ -11,7 +11,7 @@
 * run: Run the application in background
 * stop: Stop the application
 * clean: Delte the files
-* test: You want to test it to ensure that it behaves as expected. With the application started, you may want to use the command line curl
+* test: You want to test it to ensure that it behaves as expected.
 * help: Print all target make
 * unit-tests: Runs all unit-tests
 * integration-tests: Add new integration test cases

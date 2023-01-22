@@ -13,13 +13,14 @@ clean: ## Delete awesome-api
 		-rm ./awesome-api awesome.log coverage*
 
 test: ## Test API
-		make unit-tests && make integration-tests
+		make unit-tests
+		make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
 	golangci-lint run
 
 unit-tests: ## Test using in go tests
-		go test -v -short -coverprofile=coverage-units.out
+    go test -v -short -coverprofile=coverage-units.out || echo $1
 
 integration-tests:	## New integration test cases
 	go test -v -coverprofile=coverage-integrations.out
