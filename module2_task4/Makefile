@@ -1,5 +1,5 @@
 build:   ## Compile the source code
-	make check && hugo
+	make check >/dev/null 2>&1 && hugo || exit -1
 
 clean:		## Delete awesome-api
 	rm -rf dist
