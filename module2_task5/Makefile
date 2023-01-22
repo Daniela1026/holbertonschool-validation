@@ -5,8 +5,8 @@ go-build:	## Builds the API binary file using go
 
 hugo-build: check		## Builds a website using gohugo on the dist folder
 	hugo
-	
-build:  ## Generate the website from the markdown and configuration files in the directory dist/
+
+build:	## Compile the source code
 	make go-build
 	make hugo-build
 
@@ -15,8 +15,8 @@ post:		## Create a new blog post whose filename and title come from the environm
 	sed -i "s/title: .*/title: ${POST_TITLE}/" ./content/posts/${POST_NAME}.md
 
 check:  ## Lints and check for dead links on markdowns using markdownlint-cli and markdown-link-check
-	markdownlint content/posts/*
-	markdown-link-check content/posts/*
+	markdownlint ./content/posts/*.md
+	markdown-link-check ./content/posts/*.md
 
 validate: ## Validates dist/index.html using W3C Hbtn validator
 	make build
@@ -24,17 +24,17 @@ validate: ## Validates dist/index.html using W3C Hbtn validator
 	-./W3C-Validator/w3c_validator.py ./dist/index.html
 	-rm -rf ./W3C-Validator
 
-run:	## Runs the built binary and send everything to awesome.log
+run:	## background by executing
 	./awesome-api >./awesome.log 2>&1 &
 
-stop:	## Terminates the execution of awesome-api
+stop:	## Stop the application
 	kill $(shell pgrep awesome-api)
 
-clean:		## Cleans the dist folder
+clean:	## Delete awesome-api
 	-make stop
 	-rm -rf awesome-api awesome.log coverage* go* ./dist
 
-test:	## Tests API using go test
+test:	## Test the application
 	-make build
 	make unit-tests
 	make integration-tests
@@ -42,11 +42,11 @@ test:	## Tests API using go test
 lint:	## Lints all the go files using golangci-lint
 	golangci-lint run
 
-unit-tests:	## Runs implemented unit test using go test
+unit-tests:	## Test using in go tests
 	go test -v -short -coverprofile=coverage-units.out
 
-integration-tests:	## Runs integration test using go test
+integration-tests:	## Print the differents commands
 	go test -v -coverprofile=coverage-integrations.out
 
-help:		## Show help mesages
+help:	## Show this help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
