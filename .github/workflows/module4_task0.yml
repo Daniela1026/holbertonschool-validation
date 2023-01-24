@@ -1,70 +1,48 @@
+---
 name: module4_task0
-
 on:
   push:
-    branches: [master]
-    tags:
-      - "*.*.*"
-  pull_request:
-    branches: [master]
-    types: [opened, reopened, synchronize]
+    branches: [main, master]
   schedule:
-    - cron: '30 00 * * *'
+    - cron: "0 0 * * *"
+  pull_request:
+    types: [opened, reopened, edited, ready_for_review]
 
 jobs:
-  build:
-
+  module4_task0:
     runs-on: ubuntu-18.04
-
     steps:
-      - name: "Checkout"
+      - name: Checkout
         uses: actions/checkout@v3
-
-      - name: "Run bash script"
+      - name: docker run
         run: |
-          cd module4_task0 && ./setup.sh
-      
-      - name: install markdownlint
-        run: npm install -g markdownlint-cli
-
-      - name: "Run make build"
-        run: |
-          cd module4_task0 && make build
-      - name: "Run make target package"
-        run: |
-          cd module3_task5 && make package
-      - name: "Run make target lint"
-        run: |
-          cd module4_task0 && make lint
-      - name: "Uni-Test"
-        run: |
-          cd module4_task0 && make unit-tests
-      - name: "Integration-tests"
-        run: |
-          cd module4_task0 && make integration-tests
-      - name: "validate" 
-        run: |
-          cd module4_task0 && make validate
-      - name: "Archive production artifacts"
+          cd module4_task0/
+          docker build -t my-app .
+          docker run -dp 80:80 my-app
+          ./setup.sh
+          make build
+          make package
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: 1.0.1
+          files: |
+            module4_task0/awesome-website.zip
+            module4_task0/DEPLOY.md
+      - name: archive build
+        if: ${{ success()}}
         uses: actions/upload-artifact@v3
         with:
-          name: file named awesome-website
-          path: |
-            module4_task0/awesome-website.zip
-      - name: "Release task 0"
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            module4_task0/DEPLOY.md
-            module4_task0/awesome-website.zip
-      - name: Deploy to Netlify
+          name: upload-package
+          path: module3_task5/awesome-website.zip
+
+      - name: deploy
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: 'module4_task0/dist'
+          publish-dir: "./module4_task0/dist"
           production-branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
+          deploy-message: "🎉 Published on"
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
