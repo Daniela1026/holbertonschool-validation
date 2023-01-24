@@ -1,10 +1,16 @@
-# Deployment
+# Deployment FAQ
 
-- What is in the archive and how to unarchive it?
-  - Create a GitHub Release using the “softprops/gh-release” GitHub Action
-  - named 1.0.0 and pointing to the tag 1.0.0,
-  - Add the archive awesome-website.zip to the release 1.0.0,
-  - Add the content of the file DEPLOY.md as text for the release.
-- What are the commands to start and stop the application?
-- How to customize where the application logs are written?
-- How to “quickly” verify that the application is running (healthcheck)?
+- The archive awesome-website.zip contains an executable file awesome-api and
+a directory dist containing all the files needed to deploy the website.
+
+- To start the app run `unzip awesome-website.zip` and then run
+`./awesome-api &`
+
+- To save logs to `awesome.log` file, run `./awesome-api >./awesome.log 2>&1 &`
+
+- To change the log file just change the name on command
+
+- To verify application is running run `curl http://localhost:9999/health`
+and you should see 'ALIVE'
+
+- A zip file is generated when the tag 1.0.0 is pushed to Github

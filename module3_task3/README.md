@@ -10,4 +10,4 @@ build: A website generator in ./dist directory
 clean: Clean the /dist directory thoroughly
 help: show help
 post: make a post with title = POST_TITLE and name = POST_NAME (environ variables)
-package: make a package
+package: make a package.
