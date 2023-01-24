@@ -19,6 +19,4 @@ integration-tests: ## Create integration test (not-found)
 validate:  ## Create validate test (not-found)
 	
 help:     ## Prints out the list of targets and their usage
-    @echo "Usage: make <command>"
-	@echo "-----"
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
