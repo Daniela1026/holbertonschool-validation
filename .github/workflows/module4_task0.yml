@@ -1,53 +1,70 @@
----
 name: module4_task0
+
 on:
   push:
-    branches:
-      - main
-      - master
-  schedule:
-    - cron: "0 0 * * *"
+    branches: [master]
+    tags:
+      - "*.*.*"
   pull_request:
-    types: [opened, reopened, edited, ready_for_review]
+    branches: [master]
+    types: [opened, reopened, synchronize]
+  schedule:
+    - cron: '30 00 * * *'
+
 jobs:
-  module4_task0:
+  build:
+
     runs-on: ubuntu-18.04
+
     steps:
-      - name: Checkout
+      - name: "Checkout"
         uses: actions/checkout@v3
-      - name: Setup
+
+      - name: "Run bash script"
         run: |
-          cd module4_task0/
-          ./setup.sh
-      - name: build
+          cd module4_task0 && ./setup.sh
+      
+      - name: install markdownlint
+        run: npm install -g markdownlint-cli
+
+      - name: "Run make build"
         run: |
-          cd module4_task0/
-          make build
-      - name: Integration tests
+          cd module4_task0 && make build
+      - name: "Run make target package"
         run: |
-          cd module4_task0/
-          make package
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: 1.0.1
-          files: |
-            module4_task0/awesome-website.zip
-            module4_task0/DEPLOY.md
-      - name: archive build
-        if: ${{ success()}}
+          cd module3_task5 && make package
+      - name: "Run make target lint"
+        run: |
+          cd module4_task0 && make lint
+      - name: "Uni-Test"
+        run: |
+          cd module4_task0 && make unit-tests
+      - name: "Integration-tests"
+        run: |
+          cd module4_task0 && make integration-tests
+      - name: "validate" 
+        run: |
+          cd module4_task0 && make validate
+      - name: "Archive production artifacts"
         uses: actions/upload-artifact@v3
         with:
-          name: upload-package
-          path: module4_task0/awesome-website.zip
-      - name: deploy
+          name: file named awesome-website
+          path: |
+            module4_task0/awesome-website.zip
+      - name: "Release task 0"
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            module4_task0/DEPLOY.md
+            module4_task0/awesome-website.zip
+      - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './module4_task0/dist'
-          production-branch: main
+          publish-dir: 'module4_task0/dist'
+          production-branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: '🚀 Deployed on'
-          publish-message: '🎉 Published on'
+          deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
