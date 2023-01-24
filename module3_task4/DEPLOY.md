@@ -1,13 +1,24 @@
-# How to use it
+# Operations team's FAQ
 
-## DEPLOY
+## What is in the archive and how to unarchive it?
 
-- In the zip file there are two compressed files: the awesome-api and
-the dict/ directory. Use unzip to unarchive it.
-- What are the commands to start and stop the application? don't care
-- How to customize where the application logs are written? don't care
-- You can check that the app is running correctly in the CLI of github.
+* In the `awesome-website.zip` archive you will encounter the `dist` folder
+* To unarchive it in your current directory use the command line:
+`unzip awesome-website.zip`
+
+## What are the commands to start and stop the application?
+
+* To generate (start) the go-hugo website run the command: `make build`
+* To clean (stop) the go-hugo website run the command: `make clean`
+
+## How to customize where the application logs are written?
+
+## How to “quickly” verify that the application is running (healthcheck)?
+
+* To verify that the application is running correctly run the command: `hugo server`
+* Then verify the status of the website in your localhost by clicking the
+`http://localhost:1313/` given by the previous step
 
 ## tag
 
-The work flow is triggered when a tag is push. Then a zip file is created.
+Add tag in deploy
