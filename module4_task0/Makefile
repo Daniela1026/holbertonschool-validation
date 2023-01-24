@@ -12,12 +12,13 @@ package:  ## Create a file named awesome-website.zip
 	zip -r awesome-website.zip awesome-api dist/
 lint:     ## Updated to lint the files README.md and DEPLOY.md with markdownlint
 	markdownlint README.md DEPLOY.md
-	shellcheck setup.sh
 unit-tests: ## Create Uni-test npm test -- -u
-	echo "Not-found directory"
+	touch coverage-units.out
 integration-tests: ## Create integration test (not-found)
-	echo "Not-found integration"
+	touch coverage-integrations.out
 validate:  ## Create validate test (not-found)
-	echo "Not-found validate"
+	
 help:     ## Prints out the list of targets and their usage
+    @echo "Usage: make <command>"
+	@echo "-----"
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
