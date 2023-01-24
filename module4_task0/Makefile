@@ -11,7 +11,8 @@ package:  ## Create a file named awesome-website.zip
 	hugo
 	zip -r awesome-website.zip awesome-api dist/
 lint:     ## Updated to lint the files README.md and DEPLOY.md with markdownlint
-	markdownlint "*.md"
+	markdownlint README.md
+	markdownlint DEPLOY.md
 unit-tests: ## Create Uni-test npm test -- -u
 	echo "Not-found directory"
 integration-tests: ## Create integration test (not-found)
