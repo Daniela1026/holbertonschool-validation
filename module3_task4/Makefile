@@ -1,30 +1,30 @@
-.PHONY: ## build clean post
-
-build: ## Build the website
-	hugo -d dist/
-
-clean: ## Clean the build directory
-	rm -r dist/*
-
-post: ## Create a new blog post
-	hugo new posts/$(POST_NAME).md
-## Update the title of the new post
-	sed -i "s/title: .*/title: $(POST_TITLE)/" ./content/posts/$(POST_NAME).md
-
-help: ## Show commands usage information
-	@echo "Available targets:"
-	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//' | awk '{ printf "  %-20s %s\n", $$1, $$2 }'
-
-package: ## Zip website
+# Implement the next steps for the actual Go-Hugo website's source code
+build: ## Generate the website from markdown and config files in the 'dist/' folder
 	@hugo
-	@zip awesome-website.zip ./dist
 
-lint: ## Lint with markdown
-	@markdownlint README.md
-	@markdownlint DEPLOY.md
+clean: ## Cleanup the content of the 'dist/' folder
+	@rm -Rf dist/*
 
-unit-tests: ## Test file
+post: ## Create a new blog post using POST_TITLE and POST_NAME env variables
+	@rm -Rf content/posts/$(POST_NAME).md
+	@hugo new posts/$(POST_NAME).md
+	@sed -i 's/title:.*/title: $(POST_TITLE)/' content/posts/$(POST_NAME).md
+	@sed -i 's/draft:.*/draft: "false"/' content/posts/$(POST_NAME).md
 
-integration-tests: ## Integration file
+package: ## Produce a zip file containing the 'dist/' folder
+	@hugo
+	@zip -r awesome-website.zip dist/
 
-validate: ## validate
+lint: ## Check markdown files for any syntax mistake
+	@markdownlint README.md DEPLOY.md
+
+unit-tests: ## Run unit-tets of the project
+
+integration-tests: ## Run integration-tests of the project
+
+validate: ## Validate the project
+
+help: ## Show this help usage
+	@echo "Usage: make <command>"
+	@echo "-----"
+	@fgrep -h "##" Makefile | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//' | head -9
