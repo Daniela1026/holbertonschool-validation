@@ -1,5 +1,5 @@
 ---
-name: module4_task0
+name: module3_task5
 
 on:
   push:
@@ -51,9 +51,7 @@ jobs:
           files: |
             module4_task0/awesome-website.zip
             module4_task0/DEPLOY.md
-          files: |
-            module3_task5/DEPLOY.md
-            module3_task4/awesome-website.zip
+          # body_path: module3_task5/DEPLOY.md
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
