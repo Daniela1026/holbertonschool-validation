@@ -1,23 +1,22 @@
----
 name: release_drafter
-
 on:
   push:
-    branches: [master, main]
+    tags: "1.0.1"
+    branches:
+      - main
   pull_request:
     types: [opened, reopened, synchronize]
-permissions:
-  contents: read
-
+    branches:
+      - main
 jobs:
   update_release_draft:
-    permissions:
-      contents: write
-      pull-requests: write
+    permissions: write-all
+    name: release_drafter_job
     runs-on: ubuntu-18.04
     steps:
-      - uses: release-drafter/release-drafter@v5
+      - name: release drafter
+        uses: release-drafter/release-drafter@v5
         with:
-          publish: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labels: "changelog"
+          output: changelog.md
