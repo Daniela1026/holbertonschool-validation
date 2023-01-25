@@ -1,7 +1,13 @@
 #make file - Development Lifecycle with Makefile
-build:    ## Generate the website from the markdown and configuration files in the directory dist/.
-	@hugo
-	touch awesome-api
+go-build:	## Builds the API binary file using go
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app golang:1.15.8-buster /bin/bash -c "go mod init github.com/Daniela1026/awesome-api && go get github.com/gorilla/mux && go build"
+
+hugo-build:		## Builds a website using gohugo on the dist folder
+	hugo
+
+build:	## Builds all that is needed for website
+	-make go-build
+	make hugo-build
 clean:    ## Cleanup the content of the directory dist/
 	rm -rf dist/*
 post:     ## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME.
