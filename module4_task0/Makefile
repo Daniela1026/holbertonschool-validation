@@ -1,6 +1,7 @@
 #make file - Development Lifecycle with Makefile
 build:    ## Generate the website from the markdown and configuration files in the directory dist/.
-	hugo
+	@sudo apt install ./hugo.deb
+	@hugo
 	touch awesome-api
 clean:    ## Cleanup the content of the directory dist/
 	rm -rf dist/*
@@ -13,8 +14,10 @@ package:  ## Create a file named awesome-website.zip
 lint:     ## Updated to lint the files README.md and DEPLOY.md with markdownlint
 	markdownlint README.md DEPLOY.md
 unit-tests: ## Create Uni-test npm test -- -u
+	@echo "running unit tests"
 	touch coverage-units.out
 integration-tests: ## Create integration test (not-found)
+	@echo "running integration tests"
 	touch coverage-integrations.out
 validate:  ## Create validate test (not-found)
 
