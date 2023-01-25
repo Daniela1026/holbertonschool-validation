@@ -1,16 +1,13 @@
-# Operation team´s FAQ
+# How to use it
 
-## What is in the archive and how to unarchive it?
+## DEPLOY
 
-- `awesome-website.zip`
+- In the zip file there are two compressed files: the awesome-api and
+the dict/ directory. Use unzip to unarchive it.
+- What are the commands to start and stop the application? don't care
+- How to customize where the application logs are written? don't care
+- You can check that the app is running correctly in the CLI of github.
 
-## What are the commands to start and stop the application?
+## tag
 
-- `make build`
-- `make clean`
-
-## How to customize where the application logs are written?
-
-## How to “quickly” verify that the application is running (healthcheck)?
-
-## Create a release with the archive and content of DEPLOY.md, triggered by a tag
+The work flow is triggered when a tag is push. Then a zip file is created.

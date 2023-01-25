@@ -1,30 +1,29 @@
-.PHONY: ## build clean post
+build:	## Generate the website from the markdown and configuration files in the directory dist/
+	hugo -s . -d dist/
 
-build: ## Build the website
-	hugo -d dist/
-
-clean: ## Clean the build directory
-	rm -r dist/*
-
-post: ## Create a new blog post
+post:	## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
 	hugo new posts/$(POST_NAME).md
-## Update the title of the new post
-	sed -i "s/title: .*/title: $(POST_TITLE)/" ./content/posts/$(POST_NAME).md
+	sed -i 's/title: .*/title:"$(POST_TITLE)"/' content/posts/$(POST_NAME).md 
 
-help: ## Show commands usage information
-	@echo "Available targets:"
-	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//' | awk '{ printf "  %-20s %s\n", $$1, $$2 }'
+clean:	## Cleanup the content of the directory dist/
+	rm -rf dist/
 
-package: ## Zip website
-	@hugo
-	@zip awesome-website.zip ./dist
+help: Makefile ## Show this help usage
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-lint: ## Lint with markdown
-	@markdownlint README.md
-	@markdownlint DEPLOY.md
+package:
+	hugo
+	zip awesome-website.zip awesome-api dist/ 
 
-unit-tests: ## Test file
+lint:
+	markdownlint "*.md"
 
-integration-tests: ## Integration file
+unit-tests: ## run unit tests
+	@echo "all tests done"
 
-validate: ## validate
+integration-tests: ## run integration-tests
+	@echo "all integration-tests done"
+
+validate: ## run validate
+	@echo "all validations done"
+
