@@ -1,8 +1,5 @@
 #!/bin/bash
 
-## Production Instructions
-
-#* The production website is hosted in an Ubuntu 18.04 Docker container
 #* The applications "GoHugo" and "Make" are installed with `apt-get update && apt-get install -y hugo make`.
 apt update
 apt install -y git
