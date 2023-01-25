@@ -1,15 +1,15 @@
 name: module4_task0
 on:
   push:
-    branches:
-      - main
+    branches: [master]
     tags:
-      - 1.0.0
-  schedule:
-    - cron: '0 0 * * *'
+      - "*.*.*"
   pull_request:
-    types:
-      - opened
+    branches: [master]
+    types: [opened, reopened, synchronize]
+  schedule:
+    - cron: "30 00 * * *"
+    
 jobs:
   module4_task0:
     runs-on: ubuntu-18.04
