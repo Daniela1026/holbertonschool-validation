@@ -1,0 +1,415 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'markdownlint-cli',
+1 verbose cli   '-y' ]
+2 info using npm@3.5.2
+3 info using node@v8.10.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readGlobalPackageData
+7 silly fetchPackageMetaData markdownlint-cli
+8 silly fetchNamedPackageData markdownlint-cli
+9 silly mapToRegistry name markdownlint-cli
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry uri https://registry.npmjs.org/markdownlint-cli
+13 verbose request uri https://registry.npmjs.org/markdownlint-cli
+14 verbose request no auth needed
+15 info attempt registry request try #1 at 11:27:46 PM
+16 verbose request id 348836223822a6d1
+17 http request GET https://registry.npmjs.org/markdownlint-cli
+18 http 200 https://registry.npmjs.org/markdownlint-cli
+19 verbose headers { date: 'Tue, 24 Jan 2023 23:27:47 GMT',
+19 verbose headers   'content-type': 'application/json',
+19 verbose headers   'transfer-encoding': 'chunked',
+19 verbose headers   connection: 'keep-alive',
+19 verbose headers   'cf-ray': '78ec8ab0b9f51fe2-IAD',
+19 verbose headers   'access-control-allow-origin': '*',
+19 verbose headers   age: '246',
+19 verbose headers   'cache-control': 'public, max-age=300',
+19 verbose headers   etag: 'W/"3a580f75571d1db97dd0dc4ce95b51dd"',
+19 verbose headers   'last-modified': 'Sat, 07 Jan 2023 06:56:31 GMT',
+19 verbose headers   vary: 'accept-encoding, accept',
+19 verbose headers   'cf-cache-status': 'HIT',
+19 verbose headers   'x-amz-replication-status': 'COMPLETED',
+19 verbose headers   server: 'cloudflare',
+19 verbose headers   'content-encoding': 'gzip' }
+20 silly get cb [ 200,
+20 silly get   { date: 'Tue, 24 Jan 2023 23:27:47 GMT',
+20 silly get     'content-type': 'application/json',
+20 silly get     'transfer-encoding': 'chunked',
+20 silly get     connection: 'keep-alive',
+20 silly get     'cf-ray': '78ec8ab0b9f51fe2-IAD',
+20 silly get     'access-control-allow-origin': '*',
+20 silly get     age: '246',
+20 silly get     'cache-control': 'public, max-age=300',
+20 silly get     etag: 'W/"3a580f75571d1db97dd0dc4ce95b51dd"',
+20 silly get     'last-modified': 'Sat, 07 Jan 2023 06:56:31 GMT',
+20 silly get     vary: 'accept-encoding, accept',
+20 silly get     'cf-cache-status': 'HIT',
+20 silly get     'x-amz-replication-status': 'COMPLETED',
+20 silly get     server: 'cloudflare',
+20 silly get     'content-encoding': 'gzip' } ]
+21 verbose get saving markdownlint-cli to /root/.npm/registry.npmjs.org/markdownlint-cli/.cache.json
+22 silly install normalizeTree
+23 silly loadCurrentTree Finishing
+24 silly loadIdealTree Starting
+25 silly install loadIdealTree
+26 silly cloneCurrentTree Starting
+27 silly install cloneCurrentTreeToIdealTree
+28 silly cloneCurrentTree Finishing
+29 silly loadShrinkwrap Starting
+30 silly install loadShrinkwrap
+31 silly loadShrinkwrap Finishing
+32 silly loadAllDepsIntoIdealTree Starting
+33 silly install loadAllDepsIntoIdealTree
+34 silly resolveWithNewModule markdownlint-cli@0.33.0 checking installable status
+35 silly cache add args [ 'markdownlint-cli', null ]
+36 verbose cache add spec markdownlint-cli
+37 silly cache add parsed spec Result {
+37 silly cache add   raw: 'markdownlint-cli',
+37 silly cache add   scope: null,
+37 silly cache add   name: 'markdownlint-cli',
+37 silly cache add   rawSpec: '',
+37 silly cache add   spec: 'latest',
+37 silly cache add   type: 'tag' }
+38 silly addNamed markdownlint-cli@latest
+39 verbose addNamed "latest" is being treated as a dist-tag for markdownlint-cli
+40 info addNameTag [ 'markdownlint-cli', 'latest' ]
+41 silly mapToRegistry name markdownlint-cli
+42 silly mapToRegistry using default registry
+43 silly mapToRegistry registry https://registry.npmjs.org/
+44 silly mapToRegistry uri https://registry.npmjs.org/markdownlint-cli
+45 verbose addNameTag registry:https://registry.npmjs.org/markdownlint-cli not in flight; fetching
+46 verbose get https://registry.npmjs.org/markdownlint-cli not expired, no request
+47 silly addNameTag next cb for markdownlint-cli with tag latest
+48 silly addNamed markdownlint-cli@0.33.0
+49 verbose addNamed "0.33.0" is a plain semver version for markdownlint-cli
+50 silly mapToRegistry name markdownlint-cli
+51 silly mapToRegistry using default registry
+52 silly mapToRegistry registry https://registry.npmjs.org/
+53 silly mapToRegistry uri https://registry.npmjs.org/markdownlint-cli
+54 verbose addRemoteTarball https://registry.npmjs.org/markdownlint-cli/-/markdownlint-cli-0.33.0.tgz not in flight; adding
+55 verbose addRemoteTarball [ 'https://registry.npmjs.org/markdownlint-cli/-/markdownlint-cli-0.33.0.tgz',
+55 verbose addRemoteTarball   '703af1234c32c309ab52fcd0e8bc797a34e2b096' ]
+56 info retry fetch attempt 1 at 11:27:48 PM
+57 info attempt registry request try #1 at 11:27:48 PM
+58 http fetch GET https://registry.npmjs.org/markdownlint-cli/-/markdownlint-cli-0.33.0.tgz
+59 http fetch 200 https://registry.npmjs.org/markdownlint-cli/-/markdownlint-cli-0.33.0.tgz
+60 silly fetchAndShaCheck shasum 703af1234c32c309ab52fcd0e8bc797a34e2b096
+61 verbose addTmpTarball /tmp/npm-30907-411f743d/registry.npmjs.org/markdownlint-cli/-/markdownlint-cli-0.33.0.tgz not in flight; adding
+62 verbose addTmpTarball already have metadata; skipping unpack for markdownlint-cli@0.33.0
+63 silly cache afterAdd markdownlint-cli@0.33.0
+64 verbose afterAdd /root/.npm/markdownlint-cli/0.33.0/package/package.json not in flight; writing
+65 verbose afterAdd /root/.npm/markdownlint-cli/0.33.0/package/package.json written
+66 silly fetchNamedPackageData commander
+67 silly mapToRegistry name commander
+68 silly mapToRegistry using default registry
+69 silly mapToRegistry registry https://registry.npmjs.org/
+70 silly mapToRegistry uri https://registry.npmjs.org/commander
+71 silly fetchNamedPackageData get-stdin
+72 silly mapToRegistry name get-stdin
+73 silly mapToRegistry using default registry
+74 silly mapToRegistry registry https://registry.npmjs.org/
+75 silly mapToRegistry uri https://registry.npmjs.org/get-stdin
+76 silly fetchNamedPackageData glob
+77 silly mapToRegistry name glob
+78 silly mapToRegistry using default registry
+79 silly mapToRegistry registry https://registry.npmjs.org/
+80 silly mapToRegistry uri https://registry.npmjs.org/glob
+81 silly fetchNamedPackageData ignore
+82 silly mapToRegistry name ignore
+83 silly mapToRegistry using default registry
+84 silly mapToRegistry registry https://registry.npmjs.org/
+85 silly mapToRegistry uri https://registry.npmjs.org/ignore
+86 silly fetchNamedPackageData js-yaml
+87 silly mapToRegistry name js-yaml
+88 silly mapToRegistry using default registry
+89 silly mapToRegistry registry https://registry.npmjs.org/
+90 silly mapToRegistry uri https://registry.npmjs.org/js-yaml
+91 silly fetchNamedPackageData jsonc-parser
+92 silly mapToRegistry name jsonc-parser
+93 silly mapToRegistry using default registry
+94 silly mapToRegistry registry https://registry.npmjs.org/
+95 silly mapToRegistry uri https://registry.npmjs.org/jsonc-parser
+96 silly fetchNamedPackageData markdownlint
+97 silly mapToRegistry name markdownlint
+98 silly mapToRegistry using default registry
+99 silly mapToRegistry registry https://registry.npmjs.org/
+100 silly mapToRegistry uri https://registry.npmjs.org/markdownlint
+101 silly fetchNamedPackageData minimatch
+102 silly mapToRegistry name minimatch
+103 silly mapToRegistry using default registry
+104 silly mapToRegistry registry https://registry.npmjs.org/
+105 silly mapToRegistry uri https://registry.npmjs.org/minimatch
+106 silly fetchNamedPackageData run-con
+107 silly mapToRegistry name run-con
+108 silly mapToRegistry using default registry
+109 silly mapToRegistry registry https://registry.npmjs.org/
+110 silly mapToRegistry uri https://registry.npmjs.org/run-con
+111 verbose request uri https://registry.npmjs.org/commander
+112 verbose request no auth needed
+113 info attempt registry request try #1 at 11:27:48 PM
+114 http request GET https://registry.npmjs.org/commander
+115 verbose request uri https://registry.npmjs.org/get-stdin
+116 verbose request no auth needed
+117 info attempt registry request try #1 at 11:27:48 PM
+118 http request GET https://registry.npmjs.org/get-stdin
+119 verbose request uri https://registry.npmjs.org/glob
+120 verbose request no auth needed
+121 info attempt registry request try #1 at 11:27:48 PM
+122 http request GET https://registry.npmjs.org/glob
+123 verbose request uri https://registry.npmjs.org/ignore
+124 verbose request no auth needed
+125 info attempt registry request try #1 at 11:27:48 PM
+126 http request GET https://registry.npmjs.org/ignore
+127 verbose request uri https://registry.npmjs.org/js-yaml
+128 verbose request no auth needed
+129 info attempt registry request try #1 at 11:27:48 PM
+130 http request GET https://registry.npmjs.org/js-yaml
+131 verbose request uri https://registry.npmjs.org/jsonc-parser
+132 verbose request no auth needed
+133 info attempt registry request try #1 at 11:27:48 PM
+134 http request GET https://registry.npmjs.org/jsonc-parser
+135 verbose request uri https://registry.npmjs.org/markdownlint
+136 verbose request no auth needed
+137 info attempt registry request try #1 at 11:27:48 PM
+138 http request GET https://registry.npmjs.org/markdownlint
+139 verbose request uri https://registry.npmjs.org/minimatch
+140 verbose request no auth needed
+141 info attempt registry request try #1 at 11:27:48 PM
+142 http request GET https://registry.npmjs.org/minimatch
+143 verbose request uri https://registry.npmjs.org/run-con
+144 verbose request no auth needed
+145 info attempt registry request try #1 at 11:27:48 PM
+146 http request GET https://registry.npmjs.org/run-con
+147 http 200 https://registry.npmjs.org/get-stdin
+148 verbose headers { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+148 verbose headers   'content-type': 'application/json',
+148 verbose headers   'transfer-encoding': 'chunked',
+148 verbose headers   connection: 'keep-alive',
+148 verbose headers   'cf-ray': '78ec8aba2cb882c0-IAD',
+148 verbose headers   'access-control-allow-origin': '*',
+148 verbose headers   age: '165',
+148 verbose headers   'cache-control': 'public, max-age=300',
+148 verbose headers   etag: 'W/"305db4d2a7e9e77b6f1107b37f84cbbd"',
+148 verbose headers   'last-modified': 'Sat, 18 Jun 2022 07:55:13 GMT',
+148 verbose headers   vary: 'accept-encoding, accept',
+148 verbose headers   'cf-cache-status': 'HIT',
+148 verbose headers   'x-amz-replication-status': 'PENDING',
+148 verbose headers   server: 'cloudflare',
+148 verbose headers   'content-encoding': 'gzip' }
+149 silly get cb [ 200,
+149 silly get   { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+149 silly get     'content-type': 'application/json',
+149 silly get     'transfer-encoding': 'chunked',
+149 silly get     connection: 'keep-alive',
+149 silly get     'cf-ray': '78ec8aba2cb882c0-IAD',
+149 silly get     'access-control-allow-origin': '*',
+149 silly get     age: '165',
+149 silly get     'cache-control': 'public, max-age=300',
+149 silly get     etag: 'W/"305db4d2a7e9e77b6f1107b37f84cbbd"',
+149 silly get     'last-modified': 'Sat, 18 Jun 2022 07:55:13 GMT',
+149 silly get     vary: 'accept-encoding, accept',
+149 silly get     'cf-cache-status': 'HIT',
+149 silly get     'x-amz-replication-status': 'PENDING',
+149 silly get     server: 'cloudflare',
+149 silly get     'content-encoding': 'gzip' } ]
+150 verbose get saving get-stdin to /root/.npm/registry.npmjs.org/get-stdin/.cache.json
+151 http 200 https://registry.npmjs.org/run-con
+152 verbose headers { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+152 verbose headers   'content-type': 'application/json',
+152 verbose headers   'transfer-encoding': 'chunked',
+152 verbose headers   connection: 'keep-alive',
+152 verbose headers   'cf-ray': '78ec8aba2868065d-IAD',
+152 verbose headers   'access-control-allow-origin': '*',
+152 verbose headers   'cache-control': 'public, max-age=300',
+152 verbose headers   etag: 'W/"054eb0917de6d7cc4351af23f5979b0b"',
+152 verbose headers   'last-modified': 'Thu, 07 Jul 2022 19:20:14 GMT',
+152 verbose headers   vary: 'accept-encoding, accept',
+152 verbose headers   'cf-cache-status': 'REVALIDATED',
+152 verbose headers   'x-amz-replication-status': 'COMPLETED',
+152 verbose headers   server: 'cloudflare',
+152 verbose headers   'content-encoding': 'gzip' }
+153 silly get cb [ 200,
+153 silly get   { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+153 silly get     'content-type': 'application/json',
+153 silly get     'transfer-encoding': 'chunked',
+153 silly get     connection: 'keep-alive',
+153 silly get     'cf-ray': '78ec8aba2868065d-IAD',
+153 silly get     'access-control-allow-origin': '*',
+153 silly get     'cache-control': 'public, max-age=300',
+153 silly get     etag: 'W/"054eb0917de6d7cc4351af23f5979b0b"',
+153 silly get     'last-modified': 'Thu, 07 Jul 2022 19:20:14 GMT',
+153 silly get     vary: 'accept-encoding, accept',
+153 silly get     'cf-cache-status': 'REVALIDATED',
+153 silly get     'x-amz-replication-status': 'COMPLETED',
+153 silly get     server: 'cloudflare',
+153 silly get     'content-encoding': 'gzip' } ]
+154 verbose get saving run-con to /root/.npm/registry.npmjs.org/run-con/.cache.json
+155 http 200 https://registry.npmjs.org/jsonc-parser
+156 verbose headers { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+156 verbose headers   'content-type': 'application/json',
+156 verbose headers   'transfer-encoding': 'chunked',
+156 verbose headers   connection: 'keep-alive',
+156 verbose headers   'cf-ray': '78ec8aba2cbf5800-IAD',
+156 verbose headers   'access-control-allow-origin': '*',
+156 verbose headers   age: '150',
+156 verbose headers   'cache-control': 'public, max-age=300',
+156 verbose headers   etag: 'W/"7ce91aa62a10e4dd500ebf4a952cb4d0"',
+156 verbose headers   'last-modified': 'Thu, 03 Nov 2022 15:06:49 GMT',
+156 verbose headers   vary: 'accept-encoding, accept',
+156 verbose headers   'cf-cache-status': 'HIT',
+156 verbose headers   'x-amz-replication-status': 'PENDING',
+156 verbose headers   server: 'cloudflare',
+156 verbose headers   'content-encoding': 'gzip' }
+157 silly get cb [ 200,
+157 silly get   { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+157 silly get     'content-type': 'application/json',
+157 silly get     'transfer-encoding': 'chunked',
+157 silly get     connection: 'keep-alive',
+157 silly get     'cf-ray': '78ec8aba2cbf5800-IAD',
+157 silly get     'access-control-allow-origin': '*',
+157 silly get     age: '150',
+157 silly get     'cache-control': 'public, max-age=300',
+157 silly get     etag: 'W/"7ce91aa62a10e4dd500ebf4a952cb4d0"',
+157 silly get     'last-modified': 'Thu, 03 Nov 2022 15:06:49 GMT',
+157 silly get     vary: 'accept-encoding, accept',
+157 silly get     'cf-cache-status': 'HIT',
+157 silly get     'x-amz-replication-status': 'PENDING',
+157 silly get     server: 'cloudflare',
+157 silly get     'content-encoding': 'gzip' } ]
+158 verbose get saving jsonc-parser to /root/.npm/registry.npmjs.org/jsonc-parser/.cache.json
+159 http 200 https://registry.npmjs.org/ignore
+160 verbose headers { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+160 verbose headers   'content-type': 'application/json',
+160 verbose headers   'transfer-encoding': 'chunked',
+160 verbose headers   connection: 'keep-alive',
+160 verbose headers   'cf-ray': '78ec8aba2a3a205a-IAD',
+160 verbose headers   'access-control-allow-origin': '*',
+160 verbose headers   age: '133',
+160 verbose headers   'cache-control': 'public, max-age=300',
+160 verbose headers   etag: 'W/"c6139c469e6d0a595b3fcd8fdbf311ea"',
+160 verbose headers   'last-modified': 'Mon, 19 Dec 2022 16:01:45 GMT',
+160 verbose headers   vary: 'accept-encoding, accept',
+160 verbose headers   'cf-cache-status': 'HIT',
+160 verbose headers   'x-amz-replication-status': 'PENDING',
+160 verbose headers   server: 'cloudflare',
+160 verbose headers   'content-encoding': 'gzip' }
+161 silly get cb [ 200,
+161 silly get   { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+161 silly get     'content-type': 'application/json',
+161 silly get     'transfer-encoding': 'chunked',
+161 silly get     connection: 'keep-alive',
+161 silly get     'cf-ray': '78ec8aba2a3a205a-IAD',
+161 silly get     'access-control-allow-origin': '*',
+161 silly get     age: '133',
+161 silly get     'cache-control': 'public, max-age=300',
+161 silly get     etag: 'W/"c6139c469e6d0a595b3fcd8fdbf311ea"',
+161 silly get     'last-modified': 'Mon, 19 Dec 2022 16:01:45 GMT',
+161 silly get     vary: 'accept-encoding, accept',
+161 silly get     'cf-cache-status': 'HIT',
+161 silly get     'x-amz-replication-status': 'PENDING',
+161 silly get     server: 'cloudflare',
+161 silly get     'content-encoding': 'gzip' } ]
+162 verbose get saving ignore to /root/.npm/registry.npmjs.org/ignore/.cache.json
+163 http 200 https://registry.npmjs.org/glob
+164 verbose headers { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+164 verbose headers   'content-type': 'application/json',
+164 verbose headers   'transfer-encoding': 'chunked',
+164 verbose headers   connection: 'keep-alive',
+164 verbose headers   'cf-ray': '78ec8aba2ff39c5b-IAD',
+164 verbose headers   'access-control-allow-origin': '*',
+164 verbose headers   age: '202',
+164 verbose headers   'cache-control': 'public, max-age=300',
+164 verbose headers   etag: 'W/"4a9429cdc47f425156d5cf764eb374f5"',
+164 verbose headers   'last-modified': 'Sat, 14 Jan 2023 22:35:35 GMT',
+164 verbose headers   vary: 'accept-encoding, accept',
+164 verbose headers   'cf-cache-status': 'HIT',
+164 verbose headers   'x-amz-replication-status': 'PENDING',
+164 verbose headers   server: 'cloudflare',
+164 verbose headers   'content-encoding': 'gzip' }
+165 silly get cb [ 200,
+165 silly get   { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+165 silly get     'content-type': 'application/json',
+165 silly get     'transfer-encoding': 'chunked',
+165 silly get     connection: 'keep-alive',
+165 silly get     'cf-ray': '78ec8aba2ff39c5b-IAD',
+165 silly get     'access-control-allow-origin': '*',
+165 silly get     age: '202',
+165 silly get     'cache-control': 'public, max-age=300',
+165 silly get     etag: 'W/"4a9429cdc47f425156d5cf764eb374f5"',
+165 silly get     'last-modified': 'Sat, 14 Jan 2023 22:35:35 GMT',
+165 silly get     vary: 'accept-encoding, accept',
+165 silly get     'cf-cache-status': 'HIT',
+165 silly get     'x-amz-replication-status': 'PENDING',
+165 silly get     server: 'cloudflare',
+165 silly get     'content-encoding': 'gzip' } ]
+166 verbose get saving glob to /root/.npm/registry.npmjs.org/glob/.cache.json
+167 http 200 https://registry.npmjs.org/minimatch
+168 verbose headers { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+168 verbose headers   'content-type': 'application/json',
+168 verbose headers   'transfer-encoding': 'chunked',
+168 verbose headers   connection: 'keep-alive',
+168 verbose headers   'cf-ray': '78ec8aba2eb08236-IAD',
+168 verbose headers   'access-control-allow-origin': '*',
+168 verbose headers   age: '208',
+168 verbose headers   'cache-control': 'public, max-age=300',
+168 verbose headers   etag: 'W/"e6003856380394cd86bc84ca9bb0a08e"',
+168 verbose headers   'last-modified': 'Sun, 22 Jan 2023 17:52:07 GMT',
+168 verbose headers   vary: 'accept-encoding, accept',
+168 verbose headers   'cf-cache-status': 'HIT',
+168 verbose headers   'x-amz-replication-status': 'PENDING',
+168 verbose headers   server: 'cloudflare',
+168 verbose headers   'content-encoding': 'gzip' }
+169 silly get cb [ 200,
+169 silly get   { date: 'Tue, 24 Jan 2023 23:27:48 GMT',
+169 silly get     'content-type': 'application/json',
+169 silly get     'transfer-encoding': 'chunked',
+169 silly get     connection: 'keep-alive',
+169 silly get     'cf-ray': '78ec8aba2eb08236-IAD',
+169 silly get     'access-control-allow-origin': '*',
+169 silly get     age: '208',
+169 silly get     'cache-control': 'public, max-age=300',
+169 silly get     etag: 'W/"e6003856380394cd86bc84ca9bb0a08e"',
+169 silly get     'last-modified': 'Sun, 22 Jan 2023 17:52:07 GMT',
+169 silly get     vary: 'accept-encoding, accept',
+169 silly get     'cf-cache-status': 'HIT',
+169 silly get     'x-amz-replication-status': 'PENDING',
+169 silly get     server: 'cloudflare',
+169 silly get     'content-encoding': 'gzip' } ]
+170 verbose get saving minimatch to /root/.npm/registry.npmjs.org/minimatch/.cache.json
+171 verbose stack Error: Missing required argument #1
+171 verbose stack     at andLogAndFinish (/usr/share/npm/lib/fetch-package-metadata.js:31:3)
+171 verbose stack     at fetchPackageMetadata (/usr/share/npm/lib/fetch-package-metadata.js:51:22)
+171 verbose stack     at resolveWithNewModule (/usr/share/npm/lib/install/deps.js:456:12)
+171 verbose stack     at /usr/share/npm/lib/install/deps.js:457:7
+171 verbose stack     at /usr/share/npm/node_modules/iferr/index.js:13:50
+171 verbose stack     at /usr/share/npm/lib/fetch-package-metadata.js:37:12
+171 verbose stack     at addRequestedAndFinish (/usr/share/npm/lib/fetch-package-metadata.js:82:5)
+171 verbose stack     at returnAndAddMetadata (/usr/share/npm/lib/fetch-package-metadata.js:117:7)
+171 verbose stack     at pickVersionFromRegistryDocument (/usr/share/npm/lib/fetch-package-metadata.js:134:20)
+171 verbose stack     at /usr/share/npm/node_modules/iferr/index.js:13:50
+172 verbose cwd /holbertonschool-validation/module3_task4
+173 error Linux 5.3.0-1032-aws
+174 error argv "/usr/bin/node" "/usr/bin/npm" "install" "-g" "markdownlint-cli" "-y"
+175 error node v8.10.0
+176 error npm  v3.5.2
+177 error code EMISSINGARG
+178 error typeerror Error: Missing required argument #1
+178 error typeerror     at andLogAndFinish (/usr/share/npm/lib/fetch-package-metadata.js:31:3)
+178 error typeerror     at fetchPackageMetadata (/usr/share/npm/lib/fetch-package-metadata.js:51:22)
+178 error typeerror     at resolveWithNewModule (/usr/share/npm/lib/install/deps.js:456:12)
+178 error typeerror     at /usr/share/npm/lib/install/deps.js:457:7
+178 error typeerror     at /usr/share/npm/node_modules/iferr/index.js:13:50
+178 error typeerror     at /usr/share/npm/lib/fetch-package-metadata.js:37:12
+178 error typeerror     at addRequestedAndFinish (/usr/share/npm/lib/fetch-package-metadata.js:82:5)
+178 error typeerror     at returnAndAddMetadata (/usr/share/npm/lib/fetch-package-metadata.js:117:7)
+178 error typeerror     at pickVersionFromRegistryDocument (/usr/share/npm/lib/fetch-package-metadata.js:134:20)
+178 error typeerror     at /usr/share/npm/node_modules/iferr/index.js:13:50
+179 error typeerror This is an error with npm itself. Please report this error at:
+179 error typeerror     <http://github.com/npm/npm/issues>
+180 verbose exit [ 1, true ]
