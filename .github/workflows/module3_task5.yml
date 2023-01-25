@@ -1,6 +1,7 @@
+---
 name: module3_task5
 
-on: 
+on:
   push:
     branches: [master]
     tags:
@@ -9,11 +10,10 @@ on:
     branches: [master]
     types: [opened, reopened, synchronize]
   schedule:
-    - cron: '30 00 * * *' 
+    - cron: "30 00 * * *"
 
 jobs:
   build:
-
     runs-on: ubuntu-18.04
 
     steps:
@@ -59,7 +59,7 @@ jobs:
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: 'module3_task5/dist'
+          publish-dir: "module3_task5/dist"
           production-branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "🚀 Deployed on"
