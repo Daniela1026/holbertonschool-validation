@@ -12,7 +12,7 @@ help: Makefile ## Show this help usage
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 package:
-	hugo
+	-make build
 	zip awesome-website.zip awesome-api dist/ 
 
 lint:
