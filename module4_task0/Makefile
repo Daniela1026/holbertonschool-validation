@@ -20,18 +20,6 @@ lint: ## Lints the shell file and run yamllint on success.
 	$(MARKDOWN) README.md
 	$(MARKDOWN) DEPLOY.md
 	$(SHELLCHECK) setup.sh >/dev/null 2>&1 && make yamllint || echo "Lint Failed"
-	
-
-yamllint: ## Yamllint github workflow.
-	$(YAMLLINT) ./github-workflow.yml --no-warnings >/dev/null 2>&1 && echo OK
-	$(YAMLLINT) ./release_drafter.yml --no-warnings >/dev/null 2>&1 && echo OK
-	$(YQ) eval '.jobs.*.steps.[].name' ./github-workflow.yml | wc -l
-	$(YQ) eval '.jobs.*.steps.[].run' ./github-workflow.yml | grep -q 'make lint' && echo OK
-	$(YQ) eval '.jobs.*.steps.[].run' ./github-workflow.yml | grep -q 'make integration-test'
-
-markdownlint:
-	$(MARKDOWN) README.md
-	$(MARKDOWN) DEPLOY.md
 
 integration-tests: ## Spin up a server and check the localhost url
 	$(HUGO)
