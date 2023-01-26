@@ -53,7 +53,7 @@ package:  ## Generates a zip archive to deployment
 	zip awesome-website.zip awesome-api dist/
 
 build-docker:	## Builds a Docker image from Dockerfile on build directory
-	docker build -t awesome:build ./build
+	docker build -t awesome:build -f ./build/Dockerfile .
 
 help:	## Show this help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
