@@ -5,9 +5,15 @@ YAMLLINT=yamllint
 YQ=yq
 MARKDOWN=markdownlint
 
-build: ## Builds a new website
-	$(HUGO)
-	touch awesome-api
+go-build:	## Builds the API binary file using go
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app golang:1.15.8-buster /bin/bash -c "go mod init github.com/Daniela1026/awesome-api && go get github.com/gorilla/mux && go build"
+
+hugo-build:		## Builds a website using gohugo on the dist folder
+	hugo
+
+build:	## Builds all that is needed for website
+	-make go-build
+	make hugo-build
 
 post: ## Creates a new post with the title changed to the ENV value.
 	$(HUGO) new posts/$(POST_NAME).md
