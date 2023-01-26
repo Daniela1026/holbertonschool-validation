@@ -1,16 +1,24 @@
-# Deployment FAQ
+# DEPLOYMENT
 
-- The archive awesome-website.zip contains an executable file awesome-api and
-a directory dist containing all the files needed to deploy the website.
+## What is in the archive and how to unarchive it
 
-- To start the app run `unzip awesome-website.zip` and then run
-`./awesome-api &`
+The archive contains the latest build and the api binary.
+The archive can be found under either in uploads or releases if a tags is used v1.0.0
 
-- To save logs to `awesome.log` file, run `./awesome-api >./awesome.log 2>&1 &`
+### To unarchive the package
 
-- To change the log file just change the name on command
+Run the command:
+`unzip awesome-website.zip`
 
-- To verify application is running run `curl http://localhost:9999/health`
-and you should see 'ALIVE'
+## What are the commands to start and stop the application
 
-- A zip file is generated when the tag 1.0.0 is pushed to Github
+To run the application use:
+`hugo server`
+
+## How to customise where the logs are written
+
+Logs are created by the github actions and stored in the respective runner
+
+## How to quickly check the application is running
+
+Use the url in modern browser: <http://localhost:1313>
