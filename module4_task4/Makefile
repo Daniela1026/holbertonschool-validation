@@ -1,62 +1,65 @@
-HUGO=hugo
-RM=rm -rf
-SHELLCHECK=shellcheck
-YAMLLINT=yamllint
-YQ=yq
-MARKDOWN=markdownlint
+.PHONY: build
 
-docker-tests:## Build the Docker image
-	docker build -t awesome:build -f build/Dockerfile .
+go-build:	## Builds the API binary file using go
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build /bin/bash -c "go mod init github.com/Apinedas/awesome-api && go get github.com/gorilla/mux && go build"
 
-build: build-docker ## Build the website and api
-	docker run --rm -v $(PWD):/app -w /app awesome:build make build-website
-	docker run --rm -v $(PWD):/app -w /app awesome:build go build -o awesome-api
+hugo-build:		## Builds a website using gohugo on the dist folder
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build hugo
 
-build-website:## Build the Docker image
-	hugo --source . --destination dist
+build:	## Builds all that is needed for website
+	-make go-build
+	make hugo-build
 
-post: ## Creates a new post with the title changed to the ENV value.
-	$(HUGO) new posts/$(POST_NAME).md
-	$(YQ) eval '.title = "$(POST_TITLE)"' ./content/posts/$(POST_NAME).md
+post:		## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build hugo new posts/${POST_NAME}.md
+	sed -i "s/title: .*/title: ${POST_TITLE}/" ./content/posts/${POST_NAME}.md
 
-clean: ## Remove all files from target folder
-	$(RM) dist/*
+check:  ## Lints and check for dead links on markdowns using markdownlint-cli and markdown-link-check
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build markdownlint ./content/posts/*.md
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build markdown-link-check ./content/posts/*.md
 
-lint: ## Lints the shell file and run yamllint on success.
-	hadolint .Dockerfile
-	yamllint -c .yamllint.yml -f parsable **/*.yml
+validate: ## Validates dist/index.html using W3C Hbtn validator
+	-make build
+	-git clone https://github.com/holbertonschool/W3C-Validator.git
+	-./W3C-Validator/w3c_validator.py ./dist/index.html
+	-rm -rf ./W3C-Validator
 
-yamllint: ## Yamllint github workflow.
-	$(YAMLLINT) ./github-workflow.yml --no-warnings >/dev/null 2>&1 && echo OK
-	$(YAMLLINT) ./release_drafter.yml --no-warnings >/dev/null 2>&1 && echo OK
-	$(YQ) eval '.jobs.*.steps.[].name' ./github-workflow.yml | wc -l
-	$(YQ) eval '.jobs.*.steps.[].run' ./github-workflow.yml | grep -q 'make lint' && echo OK
-	$(YQ) eval '.jobs.*.steps.[].run' ./github-workflow.yml | grep -q 'make integration-test'
+run:	## Runs the built binary and send everything to awesome.log
+	./awesome-api >./awesome.log 2>&1 &
 
-markdownlint:## Build the Docker image
-	$(MARKDOWN) README.md
-	$(MARKDOWN) DEPLOY.md
+stop:	## Terminates the execution of awesome-api
+	kill $(shell pgrep awesome-api)
 
-integration-tests: ## Spin up a server and check the localhost url
-	docker run awesome:build sh -c "hugo; make _clean; make _integration-tests;"
-	make _integration-tests;
+clean:	## Removes binary and logs
+	-make stop
+	-rm -rf awesome-api awesome.log coverage* go* awesome-website.zip ./dist
 
-_integration-tests:## Build the Docker image
-	touch coverage-integrations.out
+test:	## Tests API using go test
+	-make build
+	make unit-tests
+	make integration-tests
 
-unit-tests: ## Runs different makefile recipes
-	docker run awesome:build sh -c "hugo; make _clean; make _unit-tests;"
-	touch coverage-units.out
-	
+lint:	## Lints all the go files using golangci-lint
+	-make build-docker
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build markdownlint README.md DEPLOY.md
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app hadolint/hadolint hadolint build/Dockerfile
 
-validate: ## Tests ensure it is in correct dir
-	pwd
+unit-tests:	## Runs implemented unit test using go test
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build go test -v -short -coverprofile=coverage-units.out
 
-package: ## Creates a zip archive of the dist dir api binary.
-	make build
-	zip awesome-website.zip dist/index.html
-	zip awesome-api.zip awesome-api
+integration-tests:	## Runs integration test using go test
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build go test -v -coverprofile=coverage-integrations.out
 
-.SILENT:
-help: ## Target check
-	cat Makefile | grep '##' | tr -d '##' | head -n -1
+package:  ## Generates a zip archive to deployment
+	-make build
+	zip awesome-website.zip awesome-api dist/
+
+build-docker:	## Builds a Docker image from Dockerfile on build directory
+	docker build -t awesome:build ./build
+
+docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
+	-make build-docker
+	container-structure-test test --image awesome:build --config build/cst.yml
+
+help:	## Show this help message
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
