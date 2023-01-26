@@ -8,7 +8,7 @@ post:     ## Create a new blog post whose filename and title come from the envir
 	hugo new posts/$(POST_NAME).md
 	sed -i 's/title:.*/title: $(POST_TITLE)/' content/posts/$(POST_NAME).md
 package:  ## Create a file named awesome-website.zip
-	-make build
+	hugo
 	zip awesome-website.zip awesome-api dist/ 
 lint:     ## Updated to lint the files README.md and DEPLOY.md with markdownlint
 	markdownlint README.md DEPLOY.md
