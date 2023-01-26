@@ -6,10 +6,13 @@ YQ=yq
 MARKDOWN=markdownlint
 
 build-docker:## Build the Docker image
-	docker build -t awesome:build -f build/Dockerfile .
+	docker build -t awesome:build -f ./build/Dockerfile .
 
 docker-tests:## Build the Docker image
-	docker build -t awesome:build -f build/Dockerfile .
+	@curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
+	@chmod +x container-structure-test-linux-amd64
+	@sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
+	@container-structure-test test --image awesome:build --config ./build/cst.yml
 
 build: build-docker ## Build the website and api
 	docker run --rm -v $(PWD):/app -w /app awesome:build make build-website
