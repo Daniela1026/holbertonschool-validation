@@ -1,12 +1,6 @@
-go-build:	## Builds the API binary file using go
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app golang:1.15.8-buster /bin/bash -c "go mod init github.com/Daniela1026/awesome-api && go get github.com/gorilla/mux && go build"
-
-hugo-build:		## Builds a website using gohugo on the dist folder
-	hugo
-
 build:	## Builds all that is needed for website
-	-make go-build
-	make hugo-build
+	hugo
+	touch awesome-api
 
 post:		## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
 	hugo new posts/${POST_NAME}.md

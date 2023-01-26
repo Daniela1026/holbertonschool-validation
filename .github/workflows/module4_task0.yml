@@ -5,7 +5,7 @@ on:
     tags:
       - 1.0.0
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
   pull_request:
     types:
       - opened
@@ -44,7 +44,7 @@ jobs:
       - name: deploy
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './module4_task0/dist'
+          publish-dir: "./module4_task0/dist"
           production-branch: main
           production-deploy: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -56,4 +56,3 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         timeout-minutes: 1
-        
