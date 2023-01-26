@@ -5,15 +5,9 @@ YAMLLINT=yamllint
 YQ=yq
 MARKDOWN=markdownlint
 
-go-build:	## Builds the API binary file using go
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app golang:1.15.8-buster /bin/bash -c "go mod init github.com/Daniela1026/awesome-api && go get github.com/gorilla/mux && go build"
-
-hugo-build:		## Builds a website using gohugo on the dist folder
+build: ## Builds a new website
 	$(HUGO)
-
-build:	## Builds all that is needed for website
-	-make go-build
-	make hugo-build
+	touch awesome-api
 
 post: ## Creates a new post with the title changed to the ENV value.
 	$(HUGO) new posts/$(POST_NAME).md
@@ -26,6 +20,18 @@ lint: ## Lints the shell file and run yamllint on success.
 	$(MARKDOWN) README.md
 	$(MARKDOWN) DEPLOY.md
 	$(SHELLCHECK) setup.sh >/dev/null 2>&1 && make yamllint || echo "Lint Failed"
+	
+
+yamllint: ## Yamllint github workflow.
+	$(YAMLLINT) ./github-workflow.yml --no-warnings >/dev/null 2>&1 && echo OK
+	$(YAMLLINT) ./release_drafter.yml --no-warnings >/dev/null 2>&1 && echo OK
+	$(YQ) eval '.jobs.*.steps.[].name' ./github-workflow.yml | wc -l
+	$(YQ) eval '.jobs.*.steps.[].run' ./github-workflow.yml | grep -q 'make lint' && echo OK
+	$(YQ) eval '.jobs.*.steps.[].run' ./github-workflow.yml | grep -q 'make integration-test'
+
+markdownlint:
+	$(MARKDOWN) README.md
+	$(MARKDOWN) DEPLOY.md
 
 integration-tests: ## Spin up a server and check the localhost url
 	$(HUGO)
@@ -33,7 +39,10 @@ integration-tests: ## Spin up a server and check the localhost url
 	ls dist/
 
 unit-tests: ## Runs different makefile recipes
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app golang:1.15.8-buster go test -v -short -coverprofile=coverage-units.out
+	make POST_TITLE='TEST' POST_NAME='this-is-a-test' post
+	make build
+	make clean
+	touch coverage-units.out
 
 validate: ## Tests ensure it is in correct dir
 	pwd
