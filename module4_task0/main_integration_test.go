@@ -44,9 +44,9 @@ func Test_server(t *testing.T) {
 		},
 		{
 			name:         "With two name parameters",
-			URI:          "/hello?name=Alejo&name=Luiyi",
+			URI:          "/hello?name=Alejo&name=Dani",
 			responseCode: 200,
-			body:         "Hello Luiyi!",
+			body:         "Hello Dani!",
 		},
 	}
 
