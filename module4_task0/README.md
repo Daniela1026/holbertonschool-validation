@@ -1,29 +1,50 @@
-# GoHugo introduction
+# Welcome to Awesome Inc
 
-* On this repo you'll find an introduction site to goHugo
+## Prerequisites
 
-# Prerequisites
+- **Same requirements as the previous task:**
 
-* GoHugo on latest version
-* GNU Make on latest version
-* Same tools as previous module
-* Golang in v1.15.*
-* NPM v7+ with NodeJS v14.* (stable)
-* Python 3 with pip module
+  - A Valid Go-Hugo website is provided
+  - There are no Git Submodules
+  - The theme  `ananke`  is installed
+  - No directory  `dist/`  committed
+  - Makefile present
+- **Add comments in the  `Makefile`  to describe what each target is expected
+to do.**
 
-# Lifecycle
+  - These comments should be written on the same line as the targets
+  - Each comment should start with two characters  `#`
 
-* go-build: Builds the API binary file using go
-* hugo-build: Builds a website using gohugo on the dist folder
-* build: Builds a website using gohugo on the dist folder
-* clean: Cleans the dist folder
-* post: Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
-* check:   Lints and check for dead links on markdowns using markdownlint-cli and markdown-link-check
-* validate:  Validates dist/index.html using W3C Hbtn validator
-* help: Shows this help
-* run: Runs the built binary and send everything to awesome.log 
-* stop: Terminates the execution of awesome-api
-* test: Tests API using go test
-* lint: Lints all the go files using golangci-lint 
-* unit-tests: Runs implemented unit test using go test
-* integration-tests: Runs integration test using go test help: Show this help message
+## Lifecycle
+
+- **post** : Generate the website from the markdown and configuration files in
+the directory `dist/`.
+- **build** : Cleanup the content of the directory `dist/`
+- **clean** : Create a new blog post whose filename and title come from the
+environment variables `POST_TITLE` and `POST_NAME`.
+- **package** : Create a file named awesome-website.zip
+- **lint** : Updated to lint the files README.md and DEPLOY.md with markdownlint
+- **unit-tests** : Create Uni-test
+- **integration-tests** : Integration-tests (No found)
+- **validate** : Validate (No found)
+- **help** : Prints out the list of targets and their usage.
+
+## Workflow
+
+- The original workflow file <...>/.github/workflows/module3_task0.yml must be:
+  - Present with a valid YAML syntax
+  - It must be a valid GitHub action workflow with 1 job and 2 steps
+  - It must be have 2 triggers
+
+## Build Workflow
+
+- Workflows Steps
+  - Uses Checkout
+  - Run bash script
+  - Run make build
+  - Run make target package
+  - Run make target lint
+  - Run unit-Test
+  - Run validate
+  - Uses production artifacts
+  - Uses Release task 3
