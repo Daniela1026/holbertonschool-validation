@@ -2,7 +2,7 @@
 name: module4_task0
 on:
   push:
-    branches: [main, master]
+    branches: [master]
   schedule:
     - cron: "0 0 * * *"
   pull_request:
@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: upload-package
-          path: module3_task5/awesome-website.zip
+          path: module4_task0/awesome-website.zip
 
       - name: deploy
         uses: nwtgck/actions-netlify@v1.2
