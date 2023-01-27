@@ -1,3 +1,4 @@
+#make file - Development Lifecycle with Makefile
 .PHONY: ## build clean post
 
 build: ## Build the website
@@ -31,5 +32,3 @@ unit-tests: ## Test file
 integration-tests: ## Integration file
 			@echo "running integration tests"
 			touch coverage-integrations.out
-
-validate: ## validate
