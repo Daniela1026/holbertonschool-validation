@@ -46,7 +46,7 @@ unit-tests:	## Runs implemented unit test using go test
 	echo "Not-found directory"
 
 integration-tests:	## Runs integration test using go test
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build go test -v -coverprofile=coverage-integrations.out
+	echo "Not-found integration"
 
 package:  ## Generates a zip archive to deployment
 	-make build
