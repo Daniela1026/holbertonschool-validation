@@ -35,6 +35,7 @@ environment variables `POST_TITLE` and `POST_NAME`.
 - **validate** : Validate (No found)
 - **help** : Prints out the list of targets and their usage.
 - **build-docker**: Builds a Docker image from Dockerfile on build directory
+- **docker-tests**: Test the generated docker image using container-structure-test and cst.yml config file
 
 ## Workflow
 
