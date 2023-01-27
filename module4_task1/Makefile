@@ -40,7 +40,7 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build markdownlint README.md DEPLOY.md
+	markdownlint "*.md"
 
 unit-tests:	## Runs implemented unit test using go test
 	echo "Not-found directory"
