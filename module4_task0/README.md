@@ -1,50 +1,64 @@
-# Welcome to Awesome Inc
+# Build a website with hugo
 
 ## Prerequisites
 
-- **Same requirements as the previous task:**
+```bash
+Ubunto-20.04
+Install hugo in a higher version
+```
 
-  - A Valid Go-Hugo website is provided
-  - There are no Git Submodules
-  - The theme  `ananke`  is installed
-  - No directory  `dist/`  committed
-  - Makefile present
-- **Add comments in the  `Makefile`  to describe what each target is expected
-to do.**
-
-  - These comments should be written on the same line as the targets
-  - Each comment should start with two characters  `#`
+These distributions are for the site/web page to work properly.
 
 ## Lifecycle
 
-- **post** : Generate the website from the markdown and configuration files in
-the directory `dist/`.
-- **build** : Cleanup the content of the directory `dist/`
-- **clean** : Create a new blog post whose filename and title come from the
-environment variables `POST_TITLE` and `POST_NAME`.
-- **package** : Create a file named awesome-website.zip
-- **lint** : Updated to lint the files README.md and DEPLOY.md with markdownlint
-- **unit-tests** : Create Uni-test
-- **integration-tests** : Integration-tests (No found)
-- **validate** : Validate (No found)
-- **help** : Prints out the list of targets and their usage.
+The life cycle of the web site is represented in the different rules and their
+functions within the Makefile.
 
-## Workflow
+### help
 
-- The original workflow file <...>/.github/workflows/module3_task0.yml must be:
-  - Present with a valid YAML syntax
-  - It must be a valid GitHub action workflow with 1 job and 2 steps
-  - It must be have 2 triggers
+With this rule in the Makefile we can create a list of all the rules and a brief
+description of how they work.
 
-## Build Workflow
+```bash
+make help
+```
 
-- Workflows Steps
-  - Uses Checkout
-  - Run bash script
-  - Run make build
-  - Run make target package
-  - Run make target lint
-  - Run unit-Test
-  - Run validate
-  - Uses production artifacts
-  - Uses Release task 3
+It should look something like this:
+
+```bash
+Available functions
+build: build: Create all content in the website
+clean: Revome all content in the website
+post: Create a blog
+help: Helpful list of commands
+```
+
+### Build
+
+With this rule in the Makefile we can create all the necessary files to be
+able to run our website, with the following command we execute the command.
+
+```bash
+make build
+```
+
+### Post
+
+With this rule in the Makefile we can create new posts/blogs that can be
+displayed on our website, they can be created with the following command.
+
+```bash
+make POST_NAME=who-are-we POST_TITLE="Who are we" post
+```
+
+The POST_NAME is the name of the file and the POST_TITLE is the title of
+the file.
+
+### Clean
+
+With this rule in the Makefile we can delete the files that were generated
+to create the web site, with the rule build
+
+```bash
+make clean
+```
