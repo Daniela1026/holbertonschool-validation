@@ -1,4 +1,5 @@
 # Welcome to Awesome Inc
+
 ## Prerequisites
 
 - **Same requirements as the previous task:**
@@ -16,9 +17,15 @@ to do.**
 
 ## Lifecycle
 
+- **go-build**: Builds the API binary file using go 
+- **hugo-build**: Builds a website using gohugo on the dist folder
 - **post** : Generate the website from the markdown and configuration files in
 the directory `dist/`.
+- **check**: Lints and check for dead links on markdowns using markdownlint-cli and markdown-link-check
 - **build** : Cleanup the content of the directory `dist/`
+- **run**: Runs the built binary and send everything to awesome.log
+- **stop**: Terminates the execution of awesome-api
+- **test**: Tests API using go test 
 - **clean** : Create a new blog post whose filename and title come from the
 environment variables `POST_TITLE` and `POST_NAME`.
 - **package** : Create a file named awesome-website.zip
@@ -27,6 +34,7 @@ environment variables `POST_TITLE` and `POST_NAME`.
 - **integration-tests** : Integration-tests (No found)
 - **validate** : Validate (No found)
 - **help** : Prints out the list of targets and their usage.
+- **build-docker**: Builds a Docker image from Dockerfile on build directory
 
 ## Workflow
 
