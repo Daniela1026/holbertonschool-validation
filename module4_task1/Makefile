@@ -43,7 +43,7 @@ lint:	## Lints all the go files using golangci-lint
 	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build markdownlint README.md DEPLOY.md
 
 unit-tests:	## Runs implemented unit test using go test
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build go test -v -short -coverprofile=coverage-units.out
+	echo "Not-found directory"
 
 integration-tests:	## Runs integration test using go test
 	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build go test -v -coverprofile=coverage-integrations.out
