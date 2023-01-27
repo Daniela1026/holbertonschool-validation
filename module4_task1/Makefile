@@ -40,7 +40,10 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	markdownlint "*.md"
+	curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - && sudo apt-get install -y nodejs
+	sudo npm install -g markdownlint-cli 1>&2
+	markdownlint README.md
+	markdownlint DEPLOY.md
 
 unit-tests:	## Runs implemented unit test using go test
 	echo "Not-found directory"
