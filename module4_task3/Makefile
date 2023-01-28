@@ -44,9 +44,10 @@ unit-tests:	## Runs implemented unit test using go test
 integration-tests:	## Runs integration test using go test
 	echo "Not-found integration"
 
-package:  ## Generates a zip archive to deployment
-	make build
-	zip awesome-website.zip ./dist/
+package: build  ## Generates a zip archive and a docker image to deployment
+	docker build -t awesome:${IMAGE_TAG} .
+	docker save -o awesome_image.tar awesome:${IMAGE_TAG}
+	zip awesome-website.zip awesome-api dist/ awesome_image.tar
 
 build-docker:	## Builds a Docker image from Dockerfile on build directory
 	@docker build -t awesome:build -f ./build/Dockerfile .
