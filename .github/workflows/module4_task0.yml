@@ -2,8 +2,7 @@
 name: module4_task0
 on:
   push:
-    branches:
-      - main
+    branches: [master]
   schedule:
     # * is special character quote it!
     # trigger the workflow every day at 5:30 and 17:30 UTC
