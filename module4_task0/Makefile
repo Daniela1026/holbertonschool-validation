@@ -1,9 +1,13 @@
 #make file - Development Lifecycle with Makefile
-.PHONY: ## build clean post
+go-build:	## Builds the API binary file using go
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app golang:1.15.8-buster /bin/bash -c "go mod init github.com/Apinedas/awesome-api && go get github.com/gorilla/mux && go build"
 
-build: ## Build the website
-			@hugo
-			touch awesome-api
+hugo-build:		## Builds a website using gohugo on the dist folder
+	hugo
+
+build:	## Builds all that is needed for website
+	-make go-build
+	make hugo-build
 
 clean: ## Clean the build directory
 			rm -r dist/*
