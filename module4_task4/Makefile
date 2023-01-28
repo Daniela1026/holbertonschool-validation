@@ -1,22 +1,27 @@
 .PHONY: build
+.PHONY: build
+IMAGE_TAG=$(shell git tag | tail -n 1)
+ifeq ($(strip $(IMAGE_TAG)),)
+IMAGE_TAG=$(shell git rev-parse --abbrev-ref HEAD)
+endif
 
 go-build:	## Builds the API binary file using go
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build /bin/bash -c "go mod init github.com/Apinedas/awesome-api && go get github.com/gorilla/mux && go build"
+	go mod init github.com/Apinedas/awesome-api && go get github.com/gorilla/mux && go build
 
 hugo-build:		## Builds a website using gohugo on the dist folder
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build hugo
+	hugo
 
 build:	## Builds all that is needed for website
 	-make go-build
 	make hugo-build
 
 post:		## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build hugo new posts/${POST_NAME}.md
+	hugo new posts/${POST_NAME}.md
 	sed -i "s/title: .*/title: ${POST_TITLE}/" ./content/posts/${POST_NAME}.md
 
 check:  ## Lints and check for dead links on markdowns using markdownlint-cli and markdown-link-check
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build markdownlint ./content/posts/*.md
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build markdown-link-check ./content/posts/*.md
+	markdownlint ./content/posts/*.md
+	markdown-link-check ./content/posts/*.md
 
 validate: ## Validates dist/index.html using W3C Hbtn validator
 	-make build
@@ -40,24 +45,24 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	docker run awesome:build sh -c "make _shellcheck && make markdownlint || echo 'Lint Failed'"
+	markdownlint README.md DEPLOY.md
+	wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+	chmod u+x ./hadolint
+	./hadolint Dockerfile
 
 unit-tests:	## Runs implemented unit test using go test
-	echo "Not-found directory"
+	go test -v -short -coverprofile=coverage-units.out
 
 integration-tests:	## Runs integration test using go test
-	echo "Not-found integration"
+	go test -v -coverprofile=coverage-integrations.out
 
-package:  ## Generates a zip archive to deployment
-	-make build
-	zip awesome-website.zip awesome-api dist/
-
-build-docker:	## Builds a Docker image from Dockerfile on build directory
-	docker build -t awesome:build -f build/Dockerfile .
+package:  ## Generates a zip archive and a docker image to deployment
+	docker build -t awesome:${IMAGE_TAG} .
+	docker save -o awesome_image.tar awesome:${IMAGE_TAG}
+	zip awesome-website.zip awesome-api dist/ awesome_image.tar
 
 docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
-	-make build-docker
-	container-structure-test test --image awesome:build --config build/cst.yml
+	container-structure-test test --image awesome:${IMAGE_TAG} --config cst.yml
 
 help:	## Show this help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
