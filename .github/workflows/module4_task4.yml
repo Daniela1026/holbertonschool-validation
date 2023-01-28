@@ -1,5 +1,5 @@
 ---
-name: module4_task0
+name: module4_task4
 on:
   push:
     branches: [master]
@@ -23,18 +23,18 @@ jobs:
         with:
           node-version: 16
       - run: |
-          cd module4_task0/
+          cd module4_task4/
           sudo ./setup.sh
       - name: install markdown
         run: npm install -g markdownlint-cli
 
-      - run: cd module4_task0 && make help
-      - run: cd module4_task0 && make clean
-      - run: cd module4_task0 && make lint
-      - run: cd module4_task0 && make package
-      - run: cd module4_task0 && make unit-tests
-      - run: cd module4_task0 && make integration-tests
-      - run: cd module4_task0 && make validate
+      - run: cd module4_task4 && make help
+      - run: cd module4_task4 && make clean
+      - run: cd module4_task4 && make lint
+      - run: cd module4_task4 && make package
+      - run: cd module4_task4 && make unit-tests
+      - run: cd module4_task4 && make integration-tests
+      - run: cd module4_task4 && make validate
       - name: Checkout
         uses: actions/checkout@v3
       - name: Release
@@ -57,7 +57,7 @@ jobs:
       - name: Netlify Actions
         uses: nwtgck/actions-netlify@v2.0.0
         with:
-          publish-dir: './module4_task0/dist'
+          publish-dir: './module4_task4/dist'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "🚀 Deployed on"
@@ -69,4 +69,3 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         timeout-minutes: 1
-        
