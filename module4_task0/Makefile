@@ -16,10 +16,9 @@ post: ## comment
 help: ## comment
 	cat Makefile | grep "##" | tr -d '##'
 
-
 package: ## This command line download a zip archive to zip.
-	make build
-	zip awesome-website.zip dist/
+	-make build
+	zip awesome-website.zip awesome-api dist/
 
 lint: ## setup check
 	markdownlint README.md
