@@ -1,4 +1,5 @@
-.PHONY: build
+.PHONY: Build
+SHELLCHECK=shellcheck
 IMAGE_TAG=$(shell git tag | tail -n 1)
 ifeq ($(strip $(IMAGE_TAG)),)
 IMAGE_TAG=$(shell git rev-parse --abbrev-ref HEAD)
@@ -10,7 +11,7 @@ go-build:	## Builds the API binary file using go
 hugo-build:		## Builds a website using gohugo on the dist folder
 	hugo
 
-build: 	## Builds all that is needed for website
+build:	## Builds all that is needed for website
 	-make go-build
 	make hugo-build
 
@@ -54,12 +55,12 @@ integration-tests:	## Runs integration test using go test
 	go test -v -coverprofile=coverage-integrations.out
 
 package:  ## Generates a zip archive and a docker image to deployment
-	make build
-	zip awesome-website.zip dist/index.html
-	zip awesome-api.zip awesome-api
+	docker build -t awesome:${IMAGE_TAG} .
+	docker save -o awesome_image.tar awesome:${IMAGE_TAG}
+	zip awesome-website.zip awesome-api dist/ awesome_image.tar
 
 docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
-	docker build -t awesome:build -f build/Dockerfile .
+	container-structure-test test --image awesome:${IMAGE_TAG} --config cst.yml
 
 help:	## Show this help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
