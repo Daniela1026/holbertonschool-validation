@@ -40,7 +40,15 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	ls
+	@apt-get install curl -y
+	@curl --silent --location https://deb.nodesource.com/setup_16.x | bash -
+	@apt-get install nodejs -y
+	@npm install -g markdownlint-cli || true
+	@markdownlint README.md DEPLOY.md
+	@curl --silent --location https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 -o hadolint
+	@mv hadolint /usr/local/bin/
+	@chmod +x /usr/local/bin/hadolint
+	@hadolint build/Dockerfile
 
 unit-tests:	## Runs implemented unit test using go test
 	echo "Not-found directory"
