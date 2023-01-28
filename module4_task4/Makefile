@@ -1,5 +1,5 @@
-.PHONY: build
-.PHONY: build
+.PHONY: Build
+SHELLCHECK=shellcheck
 IMAGE_TAG=$(shell git tag | tail -n 1)
 ifeq ($(strip $(IMAGE_TAG)),)
 IMAGE_TAG=$(shell git rev-parse --abbrev-ref HEAD)
