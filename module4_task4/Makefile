@@ -1,5 +1,4 @@
-.PHONY: Build
-SHELLCHECK=shellcheck
+.PHONY: build
 IMAGE_TAG=$(shell git tag | tail -n 1)
 ifeq ($(strip $(IMAGE_TAG)),)
 IMAGE_TAG=$(shell git rev-parse --abbrev-ref HEAD)
@@ -11,7 +10,7 @@ go-build:	## Builds the API binary file using go
 hugo-build:		## Builds a website using gohugo on the dist folder
 	hugo
 
-build:	## Builds all that is needed for website
+build: 	## Builds all that is needed for website
 	-make go-build
 	make hugo-build
 
@@ -45,10 +44,10 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	-make build-docker
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build markdownlint README.md DEPLOY.md
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app hadolint/hadolint hadolint build/Dockerfile
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app hadolint/hadolint hadolint Dockerfile
+	markdownlint README.md DEPLOY.md
+	wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+	chmod u+x ./hadolint
+	./hadolint Dockerfile
 
 unit-tests:	## Runs implemented unit test using go test
 	go test -v -short -coverprofile=coverage-units.out
