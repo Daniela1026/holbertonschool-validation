@@ -1,15 +1,21 @@
 FROM golang:1.15.8-buster
-# hadolint ignore=DL3008,DL3009,DL3015
-RUN apt-get update && apt-get install -y make wget curl
-# hadolint ignore=DL3047
-RUN wget https://github.com/gohugoio/hugo/releases/download/v0.109.0/hugo_extended_0.109.0_linux-amd64.deb
-# hadolint ignore=DL3059
-RUN dpkg -i hugo_extended_0.109.0_linux-amd64.deb
-# hadolint ignore=DL3059
-RUN rm -f hugo_extended_0.109.0_linux-amd64.deb
-# hadolint ignore=DL3008,DL3015,DL4001,DL4006
-RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && apt-get install -y nodejs
-# hadolint ignore=DL3016
+RUN apt install git
+RUN git clone https://github.com/MurdoNicolai/holbertonschool-validation.git
+WORKDIR /go/holbertonschool-validation/module4_task1
+ENV NODE_VERSION=16.13.0
+RUN apt install -y curl
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+ENV NVM_DIR=/root/.nvm
+RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+RUN node --version
+RUN npm --version
 RUN npm install -g markdownlint-cli
-# hadolint ignore=DL3016,DL3059
-RUN npm install -g markdown-link-check
+RUN markdownlint README.md
+RUN apt-get update
+RUN apt-get install -y curl git
+RUN curl -L https://github.com/gohugoio/hugo/releases/download/v0.91.2/hugo_0.91.2_Linux-64bit.deb -o hugo.deb
+RUN apt install -y ./hugo.deb
+RUN hugo
