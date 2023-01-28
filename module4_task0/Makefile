@@ -1,34 +1,34 @@
 #make file - Development Lifecycle with Makefile
-build: ## Generate the website from markdown and config files in the 'dist/' folder
-	@sudo apt install ./hugo.deb
+build:	## Generates website from markdown and configuration files in dist/ directory
 	@hugo
-	touch awesome-api
+	@touch awesome-api
 
-clean: ## Cleanup the content of the 'dist/' folder
-	@rm -Rf dist/*
-
-post: ## Create a new blog post using POST_TITLE and POST_NAME env variables
-	@rm -Rf content/posts/$(POST_NAME).md
+post:	## Creates a new blog post whose name and title come from env variables
 	@hugo new posts/$(POST_NAME).md
-	@sed -i 's/title:.*/title: $(POST_TITLE)/' content/posts/$(POST_NAME).md
-	@sed -i 's/draft:.*/draft: "false"/' content/posts/$(POST_NAME).md
+	@sed -i '2s/.*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
 
-package: ## Produce a zip file containing the 'dist/' folder
-	@hugo
-	@zip -r awesome-website.zip dist/
+clean:	## Cleans up the content of the dist/ directory
+	@rm -rf dist/*
 
-lint: ## Check markdown files for any syntax mistake
-	ls
+package:	## Creates a zip file containing binary and dist/ directory
+	@make build
+	@zip awesome-website.zip dist/index.html
 
-unit-tests: ## Run unit-tets of the project
+unit-tests:	## Tests a variety of make recipes
+	@make build
+	@make clean
 	@touch coverage-units.out
 
-integration-tests: ## Run integration-tests of the project
+integration-tests:	## Start a server and check localhost URL
+	@hugo
 	@touch coverage-integrations.out
+	@ls dist/
 
-validate: ## Validate the project
+validate:	## Checks the current working directory
+	@pwd
 
-help: ## Show this help usage
-	@echo "Usage: make <command>"
-	@echo "-----"
-	@fgrep -h "##" Makefile | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//' | head -9
+lint:	## Apply lint to README and DEPLOY files
+	@markdownlint README.md DEPLOY.md
+
+help:	## Prints a list of targets and their usage
+	@cat Makefile | grep '##' | tr -d '##' | head -n -1
