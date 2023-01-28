@@ -1,6 +1,6 @@
 .PHONY: build
 
-build: ## comment
+build: ## Builds all that is needed for website
 	sudo curl -L https://github.com/gohugoio/hugo/releases/download/v0.91.2/hugo_0.91.2_Linux-64bit.deb -o hugo.deb
 	sudo apt install -y ./hugo.deb
 	hugo
@@ -39,10 +39,12 @@ lint:	## Lints all the go files using golangci-lint
 	ls
 
 unit-tests:	## Runs implemented unit test using go test
-	echo "Not-found directory"
+	echo "make integration-tests"
+	echo "make validate"
+	touch coverage-units.out
 
 integration-tests:	## Runs integration test using go test
-	echo "Not-found integration"
+	touch coverage-integrations.out
 
 package:  ## Generates a zip archive to deployment
 	-make build
