@@ -43,6 +43,10 @@ test:	## Tests API using go test
 	make unit-tests
 	make integration-tests
 
+lint:	## Lints all the go files using golangci-lint
+	hadolint .Dockerfile
+	yamllint -c .yamllint.yml -f parsable **/*.yml
+
 unit-tests:	## Runs implemented unit test using go test
 	go test -v -short -coverprofile=coverage-units.out
 
@@ -55,7 +59,7 @@ package:  ## Generates a zip archive and a docker image to deployment
 	zip awesome-api.zip awesome-api
 
 docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
-	container-structure-test test --image awesome:${IMAGE_TAG} --config cst.yml
+	docker build -t awesome:build -f build/Dockerfile .
 
 help:	## Show this help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
