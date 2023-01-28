@@ -43,9 +43,6 @@ test:	## Tests API using go test
 	make unit-tests
 	make integration-tests
 
-lint:	## Lints all the go files using golangci-lint
-	ls
-
 unit-tests:	## Runs implemented unit test using go test
 	go test -v -short -coverprofile=coverage-units.out
 
