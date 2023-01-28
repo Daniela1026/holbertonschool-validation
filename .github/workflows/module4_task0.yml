@@ -1,8 +1,9 @@
+---
 name: module4_task0
 on:
   push:
     branches:
-      - main
+      - master
     tags:
       - 1.0.0
   schedule:
