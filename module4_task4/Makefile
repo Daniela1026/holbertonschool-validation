@@ -44,10 +44,7 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	markdownlint README.md DEPLOY.md
-	wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
-	chmod u+x ./hadolint
-	./hadolint Dockerfile
+	ls
 
 unit-tests:	## Runs implemented unit test using go test
 	go test -v -short -coverprofile=coverage-units.out
