@@ -6,6 +6,7 @@ go-build:
 
 hugo-build:	## Generate the website from the markdown and configuration files in the directory dist/.
 	hugo --destination dist
+
 build:
 	-make go-build
 	make hugo-build
