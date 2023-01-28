@@ -4,69 +4,62 @@ on:
   push:
     branches:
       - main
-    tags:
-      - "1.0.1"
   schedule:
-    - cron: '0 0 * * *'
+    # * is special character quote it!
+    # trigger the workflow every day at 5:30 and 17:30 UTC
+    - cron: '30 10 * * *'
   pull_request:
-    types: [opened, reopened, synchronize]
-
-permissions: read-all
-
+    types: [opened, reopened, edited, ready_for_review]
 jobs:
-  builds:
-    name: jobs
+  module4_task0_make_build_workflow:
     runs-on: ubuntu-18.04
-
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: |
-          cd module4_task0/
-          sudo ./setup.sh
-      - name: install markdown
-        run: npm install -g markdownlint-cli
-
-      - run: cd module4_task0 && make help
-      - run: cd module4_task0 && make build
-      - run: cd module4_task0 && make clean
-      - run: cd module4_task0 && make build
-      - run: cd module4_task0 && make post POST_NAME="name" POST_TITLE="title"
-      - run: cd module4_task0 && make lint
-      - run: cd module4_task0 && make package
-      - run: cd module4_task0 && make unit-tests
-      - run: cd module4_task0 && make integration-tests
-      - run: cd module4_task0 && make validate
-      - name: Checkout
+      - name: Checkout the build target
         uses: actions/checkout@v3
+      - name: Setting hugo and build
+        run: |
+          cd module4_task0
+          ./setup.sh
+      - name: build
+        run: |
+          cd module4_task0
+          make build
+      - name: post
+        run: |
+          cd module4_task0
+          make POST_TITLE=TestRelease POST_NAME='TestSuccessRelease' post
+      - name: integration testing
+        run: |
+          cd module4_task0
+          make validate
+          make integration-tests
+          make unit-tests
+          make package
+          make clean
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/1.0.0')
         with:
+          tag_name: 1.0.1
           files: |
-            awesome-website.zip
-            DEPLOY.md
-          body: |
-            ## What is in the archive and how to unarchive it?
-            ## What are the commands to start and stop the application?
-            ## How to customize where the application logs are written?
-            ## How to “quickly” verify that the application is running?
-            ## Create a release with the archive triggered by a tag
-      - run: gh release create v1.0.0 --title "v1.0.0" \
-          --notes DEPLOY.md 2>/dev/null || echo "OK"
-      - name: Release Drafter
-        uses: release-drafter/release-drafter@v5.21.1
-      - name: Deploy to Netlify
+            module4_task0/awesome-website.zip
+            module4_task0/DEPLOY.md
+      - name: build the archive
+        # if none of previous steps have failed, success returns true
+        if: ${{ success()}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: build package
+          path: module4_task0/awesome-website.zip
+
+      - name: deploy
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: 'module4_task0/dist'
+          publish-dir: './module4_task0/dist'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "🚀 Deployed on"
-          publish-message: "🎉 Published on"
-          enable-pull-request-comment: false
+          deploy-message: '🚀 Deployed on'
+          publish-message: '🎉 Published on'
+          enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
         env:
