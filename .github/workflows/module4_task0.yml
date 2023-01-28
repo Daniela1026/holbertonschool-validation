@@ -1,54 +1,65 @@
 ---
 name: module4_task0
-on:  # yamllint disable-line rule:truthy
-  workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
+
+on:
   push:
+    branches: [master, main]
     tags:
-      - '1.0.0'
-    branches: [master]
+      - "*.*.*"
+  schedule:
+    - cron: "0 0 * * *"
+
   pull_request:
+    types: [opened, reopened, edited, ready_for_review]
+
 jobs:
-  module4_task0:
+  build:
     runs-on: ubuntu-18.04
+
     steps:
-      - name: checkout the repository
+      - name: Clone the repository
         uses: actions/checkout@v3
 
-      - name: create new workflow
-        run: >
-          git clone
-          "https://github.com/MurdoNicolai/holbertonschool-validation.git"
-      - name: setup and Build
+      - name: Execute the script setup.sh
         run: |
-          cd module4_task0
-          chmod +x setup.sh
-          sudo -E ./setup.sh
-          make package
-          make lint
-          make unit-tests
-      - name: Build
-        run: echo ${{ github.sha }} > Release.txt
+          cd module4_task0/
+          ./setup.sh
+      - name: Run markdownlint on markdown files
+        run: make lint -C module4_task0/
 
-      - name: 1.0.0
-        uses: softprops/action-gh-release@v0.1.15
-        if: startsWith(github.ref, 'refs/tags/1.0.0')
+      - name: Build the application
+        run: make build -C module4_task0/
+
+      - name: Archive the dist folder inside a zip file
+        run: make package -C module4_task0/
+
+      - name: Run additional make rules
+        run: |
+          make unit-tests -C module4_task0/
+          make integration-tests -C module4_task0/
+          make validate -C module4_task0/
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: Archive awesome-website.zip as artifact
+          path: module4_task0/awesome-website.zip
+
+      - name: Create a GitHub Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            awesome-website.zip
-          body:
-            cat DEPLOY.md
+            module4_task0/awesome-website.zip
+            module4_task0/DEPLOY.md
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './dist'
+          publish-dir: "module4_task0/dist"
           production-branch: master
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "🚀 Deployed on"
-          publish-message: "🎉 Published on"
-          enable-pull-request-comment: false
+          github-token: ${{ secrets.REPO_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
         env:
