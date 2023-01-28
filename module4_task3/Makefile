@@ -49,7 +49,7 @@ package:  ## Generates a zip archive to deployment
 	zip awesome-website.zip awesome-api dist/
 
 build-docker:	## Builds a Docker image from Dockerfile on build directory
-	docker build -t awesome:build -f build/Dockerfile .
+	docker build ./build -t awesome:build --no-cache
 
 docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
 	-make build-docker
