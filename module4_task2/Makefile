@@ -36,7 +36,9 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	docker run awesome:build sh -c "make _shellcheck && make markdownlint || echo 'Lint Failed'"
+	-make build-docker
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build markdownlint README.md DEPLOY.md
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app hadolint/hadolint hadolint build/Dockerfile
 
 unit-tests:	## Runs implemented unit test using go test
 	echo "make integration-tests"
@@ -51,7 +53,7 @@ package:  ## Generates a zip archive to deployment
 	zip awesome-website.zip awesome-api dist/
 
 build-docker:	## Builds a Docker image from Dockerfile on build directory
-	docker build ./build -t awesome:build --no-cache
+	docker build -t awesome:build ./build
 
 docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
 	make unit-tests
