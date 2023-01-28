@@ -1,59 +1,54 @@
 ---
 name: module4_task3
-
-on: # yamllint disable-line rule:truthy
-  schedule:
-    - cron: "0 0 * * *"
+on:
   push:
     branches: [master]
     tags:
-      - "v*.*.*"
+      - 1.0.0
+  schedule:
+    - cron: '0 0 * * *'
   pull_request:
+    types:
+      - opened
 jobs:
-  build:
+  module4_task3:
     runs-on: ubuntu-18.04
     steps:
-      - name: Clone repository
+      - name: Check out repository code
         uses: actions/checkout@v3
-
-      - name: Install required tools
-        run: cd module4_task3 && sudo ./setup.sh
-
-      - name: Unit test
-        run: sudo make unit-tests -C module4_task0
-
-      - name: test2
-        run: sudo make integration-tests -C module4_task0
-
-      - name: validate
-        run: sudo make validate -C module4_task0
-
-      - name: build-docker
-        run: sudo make build-docker -C module4_task3
-
-      - name: docker-tests
-        run: sudo make docker-tests -C module4_task3
-
-      - name: Build command
-        run: sudo make build -C module4_task3
-
-      - name: package
-        run: sudo make package -C module4_task3
-
+      - run: |
+          curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && mkdir -p $HOME/bin && export PATH=$PATH:$HOME/bin && mv container-structure-test-linux-amd64 $HOME/bin/container-structure-test
+          cd module4_task3
+          make build-docker
+          make build
+          make help
+          make validate
+          make unit-tests
+          make integration-tests
+          make package
+          make lint
+          make docker-tests
+      - name: Archive generated zip
+        uses: actions/upload-artifact@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          name: awesome-website
+          path: module4_task3/awesome-website.zip
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          body_path: module4_task3/DEPLOY.md
           files: |
-            module4_task3/DEPLOY.md
             module4_task3/awesome-website.zip
-      - name: Deploy to Netlify
+      - name: deploy
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: "./module4_task3/dist"
+          publish-dir: './module4_task3/dist'
           production-branch: main
-          github-token: ${{ secrets.REPO_TOKEN }}
-          deploy-message: "🎉 Published on"
+          production-deploy: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
