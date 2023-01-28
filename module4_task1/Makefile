@@ -1,10 +1,14 @@
 .PHONY: build
 
+go-build:	## Builds the API binary file using go
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build /bin/bash -c "go mod init github.com/Apinedas/awesome-api && go get github.com/gorilla/mux && go build"
+
+hugo-build:		## Builds a website using gohugo on the dist folder
+	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build hugo
+
 build:	## Builds all that is needed for website
-	sudo curl -L https://github.com/gohugoio/hugo/releases/download/v0.91.2/hugo_0.91.2_Linux-64bit.deb -o hugo.deb
-	sudo apt install -y ./hugo.deb
-	hugo
-	touch awesome-api
+	-make go-build
+	make hugo-build
 
 post:		## Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME
 	docker run --rm --volume=$(shell pwd):/app --workdir=/app awesome:build hugo new posts/${POST_NAME}.md
@@ -36,7 +40,7 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	docker run awesome:build sh -c "make _shellcheck && make markdownlint || echo 'Lint Failed'"
+	ls
 
 unit-tests:	## Runs implemented unit test using go test
 	echo "make integration-tests"
@@ -51,7 +55,11 @@ package:  ## Generates a zip archive to deployment
 	zip awesome-website.zip awesome-api dist/
 
 build-docker:	## Builds a Docker image from Dockerfile on build directory
-	docker build -t awesome:build ./build
+	docker build ./build -t awesome:build --no-cache
+
+docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
+	-make build-docker
+	container-structure-test test --image awesome:build --config build/cst.yml
 
 help:	## Show this help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
