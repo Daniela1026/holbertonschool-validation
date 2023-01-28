@@ -1,42 +1,40 @@
 #make file - Development Lifecycle with Makefile
-Publish=hugo
-SHELLCHECK=shellcheck
+go-build:
+	docker run --rm --volume=$(pwd):/app --workdir=/app golang:1.15.8-buster /bin/bash -c
+	"pwd && ls && go mod init github.com/Caballero018/awesome-api && go get github.com/gorilla/mux
+	&& golang:1.15.8-buster go build"
 
-build: ## Builds a new website
-	$(Publish)
-	touch awesome-api
+hugo-build:	## Generate the website from the markdown and configuration files in the directory dist/.
+	hugo --destination dist
 
-clean: ## Remove all files from folder dist
-	rm -r dist/*
+build:
+	-make go-build
+	make hugo-build
 
-post: ## Create new post and using the sed command to modify the contents of a file.
-	$(Publish) new posts/$(POST_NAME).md
-	sed -i 's/title: .*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
+clean: ## Clean the build directory
+			rm -r dist/*
 
-lint: ## shellcheck setup
-	markdownlint README.md DEPLOY.md
-	$(SHELLCHECK) setup.sh >/dev/null 2>&1 || echo "Lint Failed"
+post: ## Create a new blog post
+			hugo new posts/$(POST_NAME).md
+## Update the title of the new post
+			sed -i "s/title: .*/title: $(POST_TITLE)/" ./content/posts/$(POST_NAME).md
 
-markdownlint: ## updated to lint the files README.md and DEPLOY.md
-	markdownlint README.md DEPLOY.md
+help: ## Show commands usage information
+			@echo "Available targets:"
+			@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//' | awk '{ printf "  %-20s %s\n", $$1, $$2 }'
 
-integration-tests: ## server and check the localhost
-	hugo
-	touch coverage-integrations.out
-	ls dist/
-	
+package: ## Zip website
+			@hugo
+			@zip awesome-website.zip ./dist
 
-unit-tests: ## Runs different makefile recipes
-	make build
-	make clean
-	touch coverage-units.out
+lint: ## Lint with markdown
+			@markdownlint README.md
+			@markdownlint DEPLOY.md
 
-validate: ## Tests dir
-	pwd
+unit-tests: ## Test file
+			@echo "running unit tests"
+			touch coverage-units.out
 
-package: ## creates archive
-	make build
-	zip awesome-website.zip dist/	
-
-help: ## Display the list of targets and their usage.
-	cat Makefile | grep '##' | tr -d '##' | head -n -1
+integration-tests: ## Integration file
+			@echo "running integration tests"
+			touch coverage-integrations.out
