@@ -1,6 +1,7 @@
 #make file - Development Lifecycle with Makefile
 build: ## Generate the website from markdown and config files in the 'dist/' folder
-	hugo
+	@sudo apt install ./hugo.deb
+	@hugo
 	touch awesome-api
 
 clean: ## Cleanup the content of the 'dist/' folder
