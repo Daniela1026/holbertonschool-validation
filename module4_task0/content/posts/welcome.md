@@ -1,6 +1,5 @@
 ---
 title: "Welcome to Awesome Inc."
-date: 2023-01-19T10:28:40-05:00
-draft: true
+date: 2023-01-02T01:37:10Z
+draft: false
 ---
-
