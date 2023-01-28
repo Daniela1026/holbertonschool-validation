@@ -1,11 +1,12 @@
 #make file - Development Lifecycle with Makefile
-go-build:	## Builds the API binary file using go
-	docker run --rm --volume=$(shell pwd):/app --workdir=/app golang:1.15.8-buster /bin/bash -c "go mod init github.com/Apinedas/awesome-api && go get github.com/gorilla/mux && go build"
+go-build:
+	docker run --rm --volume=$(pwd):/app --workdir=/app golang:1.15.8-buster /bin/bash -c
+	"pwd && ls && go mod init github.com/Caballero018/awesome-api && go get github.com/gorilla/mux
+	&& golang:1.15.8-buster go build"
 
-hugo-build:		## Builds a website using gohugo on the dist folder
-	hugo
-
-build:	## Builds all that is needed for website
+hugo-build:	## Generate the website from the markdown and configuration files in the directory dist/.
+	hugo --destination dist
+build:
 	-make go-build
 	make hugo-build
 
