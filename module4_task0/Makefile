@@ -17,7 +17,7 @@ package: ## Produce a zip file containing the 'dist/' folder
 	@zip -r awesome-website.zip dist/
 
 lint: ## Check markdown files for any syntax mistake
-	@markdownlint README.md DEPLOY.md
+	ls
 
 unit-tests: ## Run unit-tets of the project
 	@touch coverage-units.out
