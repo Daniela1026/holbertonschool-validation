@@ -2,7 +2,6 @@
 build: ## Generate the website from markdown and config files in the 'dist/' folder
 	@hugo
 	@touch awesome-api
-
 clean: ## Cleanup the content of the 'dist/' folder
 	@rm -Rf dist/*
 
@@ -21,7 +20,6 @@ lint: ## Check markdown files for any syntax mistake
 
 unit-tests: ## Run unit-tets of the project
 	@touch coverage-units.out
-
 integration-tests: ## Run integration-tests of the project
 	@touch coverage-integrations.out
 
