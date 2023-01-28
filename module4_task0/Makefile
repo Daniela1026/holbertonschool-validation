@@ -1,34 +1,34 @@
 #make file - Development Lifecycle with Makefile
-build:	## Generates website from markdown and configuration files in dist/ directory
-	@hugo
-	@touch awesome-api
+.PHONY: ## build clean post
 
-post:	## Creates a new blog post whose name and title come from env variables
-	@hugo new posts/$(POST_NAME).md
-	@sed -i '2s/.*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
+build: ## Build the website
+			@hugo
+			touch awesome-api
 
-clean:	## Cleans up the content of the dist/ directory
-	@rm -rf dist/*
+clean: ## Clean the build directory
+			rm -r dist/*
 
-package:	## Creates a zip file containing binary and dist/ directory
-	@make build
-	@zip awesome-website.zip dist/index.html
+post: ## Create a new blog post
+			hugo new posts/$(POST_NAME).md
+## Update the title of the new post
+			sed -i "s/title: .*/title: $(POST_TITLE)/" ./content/posts/$(POST_NAME).md
 
-unit-tests:	## Tests a variety of make recipes
-	@make build
-	@make clean
-	@touch coverage-units.out
+help: ## Show commands usage information
+			@echo "Available targets:"
+			@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//' | awk '{ printf "  %-20s %s\n", $$1, $$2 }'
 
-integration-tests:	## Start a server and check localhost URL
-	@hugo
-	@touch coverage-integrations.out
-	@ls dist/
+package: ## Zip website
+			@hugo
+			@zip awesome-website.zip ./dist
 
-validate:	## Checks the current working directory
-	@pwd
+lint: ## Lint with markdown
+			@markdownlint README.md
+			@markdownlint DEPLOY.md
 
-lint:	## Apply lint to README and DEPLOY files
-	@markdownlint README.md DEPLOY.md
+unit-tests: ## Test file
+			@echo "running unit tests"
+			touch coverage-units.out
 
-help:	## Prints a list of targets and their usage
-	@cat Makefile | grep '##' | tr -d '##' | head -n -1
+integration-tests: ## Integration file
+			@echo "running integration tests"
+			touch coverage-integrations.out

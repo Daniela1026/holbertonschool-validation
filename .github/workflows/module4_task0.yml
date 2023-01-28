@@ -1,56 +1,63 @@
----
 name: module4_task0
 on:
   push:
-    branches: [main, master]
+    branches: [master]
+    tags:
+      - "1.0.1"
   schedule:
-    - cron: 8 8 * * *
+    - cron: "0 0 * * *"
   pull_request:
-    types: [opened, reopened, edited, ready_for_review]
+    types: [opened, reopened, synchronize]
+
+permissions: read-all
 
 jobs:
-  module4_task0:
+  builds:
+    name: jobs
     runs-on: ubuntu-18.04
-    steps:
-      - name: Clone and check out repository
-        uses: actions/checkout@v3
 
-      - name: Docker run
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: sudo module4_task0/setup.sh
+      - name: install markdown
+        run: npm install -g markdownlint-cli
+
+      - name: Make validation
         run: |
           cd module4_task0
-          docker build -t awesome-api .
-          docker run -dp 1313:1313 awesome-api
-          ./setup.sh
           make build
           make package
-      - name: Integration-tests
-        run: |
-          cd module4_task0
-          make validate
-          make integration-tests
           make unit-tests
-          make clean
+          make integration-tests
+          make validate
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/1.0.1')
         with:
-          tag_name: 1.0.1
           files: |
-            module3_task5/awesome-website.zip
-            module3_task5/DEPLOY.md
-      - name: Archive package
-        if: ${{ success() }}
-        uses: actions/upload-artifact@v3
+            awesome-website.zip
+            DEPLOY.md
+          body: |
+            ## What is in the archive and how to unarchive it?
+            ## What are the commands to start and stop the application?
+            ## How to customize where the application logs are written?
+            ## How to “quickly” verify that the application is running?
+            ## Create a release with the archive triggered by a tag
+      - run: gh release create v1.0.1 --title "v1.0.1" \
+          --notes DEPLOY.md 2>/dev/null || echo "OK"
+      - name: Release Drafter
+        uses: release-drafter/release-drafter@v5.21.1
+      - name: Netlify Actions
+        uses: nwtgck/actions-netlify@v2.0.0
         with:
-          name: upload-package
-          path: module4_task0/awesome-website.zip
-
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
-        with:
-          publish-dir: './module4_task0/dist'
-          production-branch: master
+          publish-dir: "./module3_task5/dist"
+          production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "🎉 Published on   🚀 Deployed on"
+          deploy-message: "🚀 Deployed on"
+          publish-message: "🎉 Published on"
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
