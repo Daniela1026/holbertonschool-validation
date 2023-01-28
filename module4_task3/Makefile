@@ -45,8 +45,8 @@ integration-tests:	## Runs integration test using go test
 	echo "Not-found integration"
 
 package:  ## Generates a zip archive to deployment
-	-make build
-	zip awesome-website.zip awesome-api dist/
+	make build
+	zip awesome-website.zip ./dist/
 
 build-docker:	## Builds a Docker image from Dockerfile on build directory
 	@docker build -t awesome:build -f ./build/Dockerfile .
