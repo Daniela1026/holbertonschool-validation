@@ -1,4 +1,8 @@
 .PHONY: build
+IMAGE_TAG=$(shell git tag | tail -n 1)
+ifeq ($(strip $(IMAGE_TAG)),)
+IMAGE_TAG=$(shell git rev-parse --abbrev-ref HEAD)
+endif
 
 build: ## Builds all that is needed for website
 	sudo curl -L https://github.com/gohugoio/hugo/releases/download/v0.91.2/hugo_0.91.2_Linux-64bit.deb -o hugo.deb
@@ -44,9 +48,10 @@ unit-tests:	## Runs implemented unit test using go test
 integration-tests:	## Runs integration test using go test
 	echo "Not-found integration"
 
-package:  ## Generates a zip archive to deployment
-	make build
-	zip awesome-website.zip ./dist/
+package: build  ## Generates a zip archive and a docker image to deployment
+	docker build -t awesome:${IMAGE_TAG} .
+	docker save -o awesome_image.tar awesome:${IMAGE_TAG}
+	zip awesome-website.zip awesome-api dist/ awesome_image.tar
 
 build-docker:	## Builds a Docker image from Dockerfile on build directory
 	@docker build -t awesome:build -f ./build/Dockerfile .
