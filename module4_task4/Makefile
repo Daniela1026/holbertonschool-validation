@@ -45,8 +45,9 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
+	npm install -g markdownlint-cli 1>&2
 	markdownlint README.md DEPLOY.md
-	$(SHELLCHECK) setup.sh >/dev/null 2>&1 || echo "Lint Failed"
+	shellcheck setup.sh
 
 unit-tests:	## Runs implemented unit test using go test
 	go test -v -short -coverprofile=coverage-units.out
