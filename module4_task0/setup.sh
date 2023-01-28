@@ -1,9 +1,19 @@
 #!/usr/bin/env bash
-sudo apt-get update
-sudo apt-get install -y make golang-go git curl
-curl -L https://github.com/gohugoio/hugo/releases/download/v0.84.0/hugo_0.84.0_Linux-64bit.deb -o hugoversion.deb
-sudo apt install ./hugoversion.deb
-sudo snap install golangci-lint
-sudo gem install chef-utils -v 16.6.14
-sudo npm install -g markdownlint-cli
-sudo gem install mdl -v 0.11.0
+apt-get update && apt-get install -y make wget
+wget https://github.com/gohugoio/hugo/releases/download/v0.109.0/hugo_extended_0.109.0_Linux-64bit.tar.gz
+tar -xvf hugo_extended_0.109.0_Linux-64bit.tar.gz hugo
+mv hugo /usr/local/bin/
+rm -f hugo_extended_0.109.0_Linux-64bit.tar.gz || true
+
+apt-get install zip -y
+npm install -g markdownlint-cli -y
+
+make build
+
+sudo apt-get remove golang-go
+rm -rf /usr/local/go || true
+
+rm -rf dist/ 2> /dev/null
+rm -f awesome-api || true
+rm -f coverage-units.out || true
+rm -f coverage-integrations.out || true
