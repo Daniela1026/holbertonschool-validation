@@ -1,9 +1,10 @@
 help: ## Build: Generate the website from the markdown and configuration files in the directory dist/.
 	@sed -ne '/@sed/!s/## //p' Makefile
 
-build: ## Cleanup the content of the directory dist/
-	@sudo apt install ./hugo.deb
-	@hugo
+build:	## Builds all that is needed for website
+	sudo curl -L https://github.com/gohugoio/hugo/releases/download/v0.91.2/hugo_0.91.2_Linux-64bit.deb -o hugo.deb
+	sudo apt install -y ./hugo.deb
+	hugo
 	touch awesome-api
 
 clean: ## Post: Create a new blog post whose filename and title come from the environment variables POST_TITLE and POST_NAME.
