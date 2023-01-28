@@ -28,7 +28,6 @@ jobs:
         run: npm install -g markdownlint-cli
 
       - run: cd module4_task0 && make help
-      - run: cd module4_task0 && make build
       - run: cd module4_task0 && make clean
       - run: cd module4_task0 && make build
       - run: cd module4_task0 && make post POST_NAME="name" POST_TITLE="title"
