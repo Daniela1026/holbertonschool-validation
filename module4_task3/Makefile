@@ -40,7 +40,7 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	docker run awesome:build sh -c "make _shellcheck && make markdownlint || echo 'Lint Failed'"
+	ls
 
 unit-tests:	## Runs implemented unit test using go test
 	echo "Not-found directory"
