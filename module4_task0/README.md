@@ -1,46 +1,32 @@
-# **Introduction to DevOps\_\_Automate everything to Focus on what really matters**
+# Awesome Inc. website Docs
 
-## **LEARNINGS**
+Welcome to our site, please follow the next information in order to have a
+working website.
 
-- Understand the value of automating tedious tasks
-- Define a development lifecycle
-- Automate shell-like tasks with Make, and/or shell script
-- Be aware of tools dependencies and the value of reproducing environment
-- Build static HTML website from Markdown code using Go-Hugo
+## Prerequisites
 
-## **Prerequisites**
+- Hugo v0.80+ must be used.
+- Usage of Git Submodules is prohibited.
+- Use the theme "ananke" for the website by following:
+`Note for non-git users` at the
+[Step 3](https://docs.edg.io/guides/sites_frameworks/getting_started/hugo).
+- The website is expected to be generated into ./dist folder but this folder
+should be **absent** from the repo.
 
-- Install Go-Hugo to produce a valid Go-Hugo Website
-- No Git Submodules allowed
-- No directory `dist/` committed
-- A Ubuntu system
-- Usage of a Makefile to ease Lifecycle
-- The website created has to use the theme 'ananke'
+## Lifecycle
 
-## **Lifecycle**
+- post
+- build
+- clean
+- package
+- lint
+- unit-tests
+- integration-tests
+- validate
+- help
 
-- build: Generate the website from the markdown and configuration files
-  in the directory `dist/`.
-- clean: Cleanup the content of the directory `dist/`
-- post: Create a new blog post whose filename and title come from the
-  environment variables `POST_TITLE` and `POST_NAME`.
-- help: Display the documentation of all targets
-- unit-tests: Runs several make command, expected correct output
-- integration-tests: runs post and build to check for proper integration of new posts
-- validate: validate that we are in the correct folder
-- package: compress archive `awesome-website.zip`
+## Build Workflow
 
-## **HELP Workflow**
-
-- Triggering the workflow, each time new code is pushed to the repo,
-  or at least once per day.
-- In this directory, we're going to configure automatic actions
-  to be performed when something happen to the repository.
-- Using Github Actions to ensure CI/CL pipeline
-  (build starts, TEST, BUILD, PUSH, DEPLOY)
-
-==> help workflow test that help gets displayed
-
-## **BUILD Workflow**
-
-Fixing code in order to make the build command valid with github actions
+- The workflow is executed into Ubuntu 18.04 environment
+- Required tools are installed prior to any `make` target, by executing the
+script `setup.sh`

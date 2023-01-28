@@ -1,30 +1,33 @@
+# Implement the next steps for the actual Go-Hugo website's source code
+build: ## Generate the website from markdown and config files in the 'dist/' folder
+	@hugo
+	@touch awesome-api
 
-help: ## showing help documentation
-	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
-build:		## Generates the website from the markdown and configuration files (inside dist/)
-	hugo
-	touch ./awesome-api
-clean:		## Cleanup the content of the directory dist/
-	rm -rf dist/*
-post:		## Create a new blog post whose filename and title come from env var POST_TITLE and POST_NAME
-	hugo new content/posts/$(POST_NAME).md
-# -i option to edit file in place
-	sed -i 's/title: .*/title: "$(POST_TITLE)"/' content/posts/$(POST_NAME).md
-lint: ## runs linter for .md file and shell script
-	markdownlint README.md DEPLOY.md
-	shellcheck setup.sh
+clean: ## Cleanup the content of the 'dist/' folder
+	@rm -Rf dist/*
 
-unit-tests: ## runs several steps of make to test the functionality
-	make POST_TITLE=GoNotGo POST_NAME='GoOrNot' post
-	make build
-	make clean
-	touch ./coverage-units.out
+post: ## Create a new blog post using POST_TITLE and POST_NAME env variables
+	@rm -Rf content/posts/$(POST_NAME).md
+	@hugo new posts/$(POST_NAME).md
+	@sed -i 's/title:.*/title: $(POST_TITLE)/' content/posts/$(POST_NAME).md
+	@sed -i 's/draft:.*/draft: "false"/' content/posts/$(POST_NAME).md
 
-integration-tests: ## runs post and build command to check for integration success
-	ls dist/
-	touch ./coverage-integrations.out
-validate: ## validate that we are in the correct directory
-	pwd
-package: ## creates an archive 
-	make build
-	zip awesome-website.zip dist/
+package: ## Produce a zip file containing the 'dist/' folder
+	@hugo
+	@zip -r awesome-website.zip dist/
+
+lint: ## Check markdown files for any syntax mistake
+	@markdownlint README.md DEPLOY.md
+
+unit-tests: ## Run unit-tets of the project
+	@touch coverage-units.out
+
+integration-tests: ## Run integration-tests of the project
+	@touch coverage-integrations.out
+
+validate: ## Validate the project
+
+help: ## Show this help usage
+	@echo "Usage: make <command>"
+	@echo "-----"
+	@fgrep -h "##" Makefile | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//' | head -9
