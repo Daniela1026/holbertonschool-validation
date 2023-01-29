@@ -40,7 +40,7 @@ jobs:
         with:
           body_path: module4_task4/DEPLOY.md
           files: |
-            module4_task3/awesome-website.zip
+            module4_task4/awesome-website.zip
       - name: Deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
