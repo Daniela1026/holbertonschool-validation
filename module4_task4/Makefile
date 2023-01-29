@@ -44,10 +44,9 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
+	npm install -g markdownlint-cli 1>&2
 	markdownlint README.md DEPLOY.md
-	wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
-	chmod u+x ./hadolint
-	./hadolint Dockerfile
+	shellcheck setup.sh
 
 unit-tests:	## Runs implemented unit test using go test
 	go test -v -short -coverprofile=coverage-units.out
@@ -57,8 +56,7 @@ integration-tests:	## Runs integration test using go test
 
 package:  ## Generates a zip archive and a docker image to deployment
 	make build
-	mkdir -p dist
-	zip awesome-website.zip dist
+	zip awesome-website.zip dist/
 
 docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
 	container-structure-test test --image awesome:${IMAGE_TAG} --config cst.yml
