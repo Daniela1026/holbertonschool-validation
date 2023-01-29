@@ -55,9 +55,9 @@ integration-tests:	## Runs integration test using go test
 	go test -v -coverprofile=coverage-integrations.out
 
 package:  ## Generates a zip archive and a docker image to deployment
-	@make build
-	@mkdir -p dist
-	@zip -r awesome-website.zip  dist/
+	docker build -t awesome:${IMAGE_TAG} .
+	docker save -o awesome_image.tar awesome:${IMAGE_TAG}
+	zip awesome-website.zip awesome-api dist/ awesome_image.tar
 
 docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
 	container-structure-test test --image awesome:${IMAGE_TAG} --config cst.yml
