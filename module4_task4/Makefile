@@ -6,7 +6,7 @@ IMAGE_TAG=$(shell git rev-parse --abbrev-ref HEAD)
 endif
 
 go-build:	## Builds the API binary file using go
-	go mod init github.com/Apinedas/awesome-api && go get github.com/gorilla/mux && go build
+	go mod init github.com/Daniela1026/awesome-api && go get github.com/gorilla/mux && go build
 
 hugo-build:		## Builds a website using gohugo on the dist folder
 	hugo
