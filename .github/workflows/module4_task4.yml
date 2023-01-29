@@ -39,5 +39,5 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "awesome-website"
-          heroku_email: "apsanchez2549@gmail.com"
+          heroku_email: "cartagenad49@gmail.com"
           usedocker: true
