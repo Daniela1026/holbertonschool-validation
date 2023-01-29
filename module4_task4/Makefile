@@ -57,8 +57,8 @@ integration-tests:	## Runs integration test using go test
 
 package:  ## Generates a zip archive and a docker image to deployment
 	make build
-	zip awesome-website.zip dist/index.html
-	zip awesome-api.zip awesome-api
+	mkdir -p dist
+	zip awesome-website.zip dist
 
 docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
 	container-structure-test test --image awesome:${IMAGE_TAG} --config cst.yml
