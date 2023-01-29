@@ -38,6 +38,6 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "awesome-website"
+          heroku_app_name: "website1026"
           heroku_email: "cartagenad49@gmail.com"
           usedocker: true
