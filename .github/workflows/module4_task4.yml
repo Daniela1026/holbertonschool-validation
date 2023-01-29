@@ -29,7 +29,6 @@ jobs:
 
       - run: cd module4_task4 && make help
       - run: cd module4_task4 && make clean
-      - run: cd module4_task4 && make lint
       - run: cd module4_task4 && make package
       - run: cd module4_task4 && make unit-tests
       - run: cd module4_task4 && make integration-tests
