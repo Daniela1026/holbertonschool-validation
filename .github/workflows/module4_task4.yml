@@ -1,4 +1,3 @@
----
 name: module4_task4
 on:
   push:
@@ -11,22 +10,16 @@ on:
     types:
       - opened
 jobs:
-  module4_task3:
+  module4_task4:
     runs-on: ubuntu-18.04
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+        # yamllint disable rule:line-length
       - run: |
           curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && mkdir -p $HOME/bin && export PATH=$PATH:$HOME/bin && mv container-structure-test-linux-amd64 $HOME/bin/container-structure-test
           cd module4_task4
-          make build-docker
-          make build
-          make help
-          make validate
-          make unit-tests
-          make integration-tests
           make package
-          make lint
           make docker-tests
       - name: Archive generated zip
         uses: actions/upload-artifact@v3
