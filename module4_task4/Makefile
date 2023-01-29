@@ -1,17 +1,16 @@
-.PHONY: Build
-SHELLCHECK=shellcheck
+.PHONY: build
 IMAGE_TAG=$(shell git tag | tail -n 1)
 ifeq ($(strip $(IMAGE_TAG)),)
 IMAGE_TAG=$(shell git rev-parse --abbrev-ref HEAD)
 endif
 
 go-build:	## Builds the API binary file using go
-	go mod init github.com/Daniela1026/awesome-api && go get github.com/gorilla/mux && go build
+	go mod init github.com/Apinedas/awesome-api && go get github.com/gorilla/mux && go build
 
 hugo-build:		## Builds a website using gohugo on the dist folder
 	hugo
 
-build:	## Builds all that is needed for website
+build: 	## Builds all that is needed for website
 	-make go-build
 	make hugo-build
 
@@ -44,16 +43,17 @@ test:	## Tests API using go test
 	make unit-tests
 	make integration-tests
 
-lint: ##  updated to lint the files README.md and DEPLOY.md with markdownlint command line
-	ls
+lint:	## Lints all the go files using golangci-lint
+	markdownlint README.md DEPLOY.md
+	wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+	chmod u+x ./hadolint
+	./hadolint Dockerfile
 
-unit-tests: ## run unitest
-	@echo "running unit tests"
-	touch coverage-units.out
+unit-tests:	## Runs implemented unit test using go test
+	go test -v -short -coverprofile=coverage-units.out
 
-integration-tests: ## run integration test
-	@echo "running integration tests"
-	touch coverage-integrations.out
+integration-tests:	## Runs integration test using go test
+	go test -v -coverprofile=coverage-integrations.out
 
 package:  ## Generates a zip archive and a docker image to deployment
 	docker build -t awesome:${IMAGE_TAG} .
