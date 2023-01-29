@@ -44,9 +44,7 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint:	## Lints all the go files using golangci-lint
-	@apt install curl -y
 	@curl --silent --location https://deb.nodesource.com/setup_16.x | bash -
-	@apt install nodejs -y
 	@npm install -g markdownlint-cli || true
 	@markdownlint README.md DEPLOY.md
 
@@ -57,8 +55,9 @@ integration-tests:	## Runs integration test using go test
 	go test -v -coverprofile=coverage-integrations.out
 
 package:  ## Generates a zip archive and a docker image to deployment
-	@hugo
-	@zip -r awesome-website.zip dist/
+	@make build
+	@mkdir -p dist
+	@zip -r awesome-website.zip  dist/
 
 docker-tests:	## Test the generated docker image using container-structure-test and cst.yml config file
 	container-structure-test test --image awesome:${IMAGE_TAG} --config cst.yml
