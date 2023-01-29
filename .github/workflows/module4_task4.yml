@@ -51,18 +51,11 @@ jobs:
           --notes DEPLOY.md 2>/dev/null || echo "OK"
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5.21.1
-      - name: Netlify Actions
-        uses: nwtgck/actions-netlify@v2.0.0
+      - name: Deploy to heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          publish-dir: './module4_task4/dist'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "🚀 Deployed on"
-          publish-message: '🎉 Published on'
-          enable-pull-request-comment: true
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 1
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "awesome-website"
+          heroku_email: "apsanchez2549@gmail.com"
+          usedocker: true
+          

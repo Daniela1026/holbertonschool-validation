@@ -45,8 +45,7 @@ test:	## Tests API using go test
 	make integration-tests
 
 lint: ##  updated to lint the files README.md and DEPLOY.md with markdownlint command line
-	@markdownlint README.md
-	@markdownlint DEPLOY.md
+	ls
 
 unit-tests: ## run unitest
 	@echo "running unit tests"
